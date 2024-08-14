@@ -1,0 +1,445 @@
+<template>
+  <div>
+    <!-- 检索区查询表单 -->
+    <div class="search">
+      <el-form :inline="true" ref="searchFromRef" :model="sm">
+        <!-- 表单项 -->
+        <el-form-item label="主键" prop="id">
+          <el-input placeholder="请输入ID" v-model="sm.id" />
+        </el-form-item>
+
+        <el-form-item label="姓名" prop="name">
+          <el-input placeholder="请输入医生姓名" v-model="sm.name" />
+        </el-form-item>
+        <el-form-item label="科室" prop="subId">
+          <el-select
+            placeholder="请选择科室"
+            style="width: 300px"
+            v-model="sm.subId"
+          >
+            <el-option
+              v-for="department in departments"
+              :key="department.id"
+              :label="department.name"
+              :value="department.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="性别" prop="sex">
+          <el-select
+            placeholder="请选择医生性别"
+            style="width: 100px"
+            v-model="sm.sex"
+          >
+            <el-option key="0" label="不限" value="" />
+            <el-option key="1" label="男" value="男" />
+            <el-option key="2" label="女" value="女" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="手机号" prop="phone">
+          <el-input placeholder="请输入医生手机号" v-model="sm.phone" />
+        </el-form-item>
+      </el-form>
+    </div>
+    <!-- 操作区 -->
+    <div class="operate">
+      <el-button type="primary" @click="add" :icon="Plus">新增</el-button>
+      <el-button type="primary" @click="search" :icon="Search">查询</el-button>
+      <el-button type="primary" @click="resetSearch" :icon="Refresh"
+        >重置</el-button
+      >
+    </div>
+
+    <!-- 数据展示区 -->
+    <div class="data">
+      <!-- 表格 -->
+      <div class="grid" style="margin-top: 5px">
+        <el-table
+          :data="tableData"
+          border
+          style="width: 100%"
+          :header-cell-style="headercellStyle"
+        >
+          <el-table-column prop="id" label="ID" width="70" />
+          <el-table-column prop="name" label="姓名" width="120" />
+          <el-table-column prop="photo" label="头像" width="80">
+            <template #default="{ row }">
+              <el-image style="width: 100%; height: 100%" :src="row.photo" />
+            </template>
+          </el-table-column>
+          <el-table-column
+            v-if="false"
+            prop="subId"
+            label="科室号"
+            width="80"
+          />
+          <el-table-column prop="subName" label="科室" width="110" />
+          <el-table-column prop="sex" label="性别" width="50" />
+          <el-table-column prop="workDate" label="入职日期" width="120" />
+          <el-table-column prop="level" label="职称" width="120" />
+          <el-table-column prop="education" label="学历" width="120" />
+          <el-table-column prop="phone" label="手机号" width="160" />
+          <el-table-column
+            prop="about"
+            label="信息"
+            width="480"
+            show-overflow-tooltip
+          />
+          <el-table-column prop="count" label="预约次数" width="80" />
+          <el-table-column label="Operations">
+            <template #default="scope">
+              <el-button size="small" @click="editRow(scope.row)">
+                Edit
+              </el-button>
+              <el-button
+                size="small"
+                type="danger"
+                @click="deleteRow(scope.row)"
+              >
+                Delete
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+
+      <!-- 分页 -->
+      <div class="pagination" style="margin: 5px">
+        <el-pagination
+          v-model:current-page="pi.pageNo"
+          v-model:page-size="pi.pageSize"
+          :page-sizes="[5, 10, 15, 30, 50, 100]"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pi.total"
+          background
+          @change="paginate"
+        />
+      </div>
+    </div>
+    <!-- 新增对话框 -->
+    <el-dialog
+      v-model="show"
+      :title="dialogTitle"
+      width="640"
+      draggable
+      :close-on-click-modal="false"
+      @closed="close"
+    >
+      <!-- 新增操作表单 -->
+      <el-form :model="sfm" ref="sfRef">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="科室:" label-width="100" prop="subId">
+              <el-select
+                placeholder="请选择科室"
+                style="width: 300px"
+                v-model="sfm.subId"
+              >
+                <el-option
+                  v-for="department in departments"
+                  :key="department.id"
+                  :label="department.name"
+                  :value="department.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="头像:" label-width="100" prop="photo">
+              <el-upload
+                class="photo"
+                action="/api/uploads/photo"
+                :show-file-list="false"
+                :on-success="photoSuccess"
+              >
+                <el-image
+                  v-if="sfm.photo"
+                  style="width: 120px; height: 120px"
+                  :src="sfm.photo"
+                />
+                <el-icon class="icon" v-else> <Plus /></el-icon>
+              </el-upload>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="20">
+          <el-col :span="11">
+            <el-form-item label="姓名:" label-width="45" prop="name">
+              <el-input
+                v-model="sfm.name"
+                placeholder="请输入医生姓名"
+              /> </el-form-item
+          ></el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="11"
+            ><el-form-item label="性别:" label-width="45" prop="sex">
+              <el-select v-model="sfm.sex" placeholder="请选择医生性别">
+                <el-option label="男" value="男" />
+                <el-option label="女" value="女" />
+              </el-select> </el-form-item
+          ></el-col>
+          <el-col :span="12" :offset="1"
+            ><el-form-item label="入职日期:" label-width="75" prop="workDate">
+              <el-date-picker
+                v-model="sfm.workDate"
+                type="date"
+                placeholder="请选择入职日期"
+                :width="650"
+              /> </el-form-item
+          ></el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="11">
+            <el-form-item label="预约次数:" label-width="45" prop="count">
+              <el-input
+                v-model="sfm.count"
+                placeholder="请输入预约次数"
+              /> </el-form-item
+          ></el-col>
+          <el-col :span="12" :offset="1"
+            ><el-form-item label="学历:" label-width="75" prop="education">
+              <el-input
+                v-model="sfm.education"
+                placeholder="请输入医生学历"
+              /> </el-form-item
+          ></el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="11"
+            ><el-form-item label="职称 :" label-width="45" prop="level">
+              <el-input
+                v-model="sfm.level"
+                placeholder="请输入职称"
+              /> </el-form-item
+          ></el-col>
+          <el-col :span="12" :offset="1"
+            ><el-form-item label="手机号:" label-width="75" prop="phone">
+              <el-input
+                v-model="sfm.phone"
+                placeholder="请输入医生手机号"
+              /> </el-form-item
+          ></el-col>
+        </el-row>
+
+        <el-form-item label="信息:" label-width="45" prop="about">
+          <el-input
+            v-model="sfm.about"
+            :rows="8"
+            type="textarea"
+            placeholder="请输入信息"
+          />
+        </el-form-item>
+      </el-form>
+      <!-- 对话框按钮 # 插槽 -->
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="show = false">取消</el-button>
+          <el-button type="primary" @click="submitForm"> 确认 </el-button>
+        </div>
+      </template>
+    </el-dialog>
+  </div>
+</template>
+<script setup>
+import { Plus, Delete, Edit, Refresh, Search, Share, Upload, } from '@element-plus/icons-vue'
+import { findAll as apiFindAll, deleteById as apiDeleteById, save as apiSave, update as apiUpdate } from '@/api/DoctorApi'
+import { findSubNames } from '@/api/SubjectApi'
+import { nextTick, onMounted, ref, toRaw } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+
+//当组件加载完成后，自动调用findAll方法
+onMounted(async () => {
+  search()
+  departments.value = await findSubNames()
+  document.title = '医生管理'
+})
+const departments = ref([])
+const tableData = ref()
+// 前两项是双向数据绑定
+const pi = ref({
+  pageNo: 1,
+  pageSize: 5,
+  total: 1000
+})
+async function search () {
+  let params = sm.value
+  console.log(params)
+  let resp = await apiFindAll(pi.value.pageNo, pi.value.pageSize, params)
+  //   console.log(resp)
+  tableData.value = resp.rows
+  pi.value = resp.pi
+}
+function paginate () {
+  // console.log(pi.value.pageNo, pi.value.pageSize)
+  search()
+}
+//查询条件引用
+const sm = ref({
+  id: '',
+  subId: '',
+  name: "",
+  sex: "",
+  phone: "",
+})
+//查询表单实例引用
+let searchFromRef
+function resetSearch () {
+  searchFromRef.resetFields()
+}
+function submitForm () {
+  let stu = toRaw(sfm.value)
+  if (stu.id) {//修改
+    submitEdit(stu)
+  } else {//添加
+    submitAdd(stu)
+  }
+}
+function deleteRow (row) {
+  let id = row.id
+  // console.log(id)
+  deleteById(id)
+}
+function deleteById (id) {
+  ElMessageBox.confirm(
+    '是否确认删除选中医生数据?',
+    '删除确认',
+    {
+      type: 'warning',
+    }
+  ).then(async () => {//点击确认
+    let resp = await apiDeleteById(id)
+    if (resp.success) {
+      ElMessage({
+        type: 'success',
+        message: '删除成功',
+      })
+      search()
+    }
+    else {
+      ElMessage({
+        message: '删除失败',
+        type: 'warning',
+      })
+    }
+  }).catch(() => {
+    ElMessage({
+      type: 'info',
+      message: '删除取消',
+    })
+  })
+}
+const show = ref(false)//控制对话框是否显示
+function editRow (row) {
+  //克隆防止修改数据时影响原数据
+  row = Object.assign({}, row)
+  show.value = true
+  dialogTitle.value = '修改医生信息'
+  nextTick(() => {
+    sfm.value = row
+  })
+}
+async function submitEdit (stu) {
+  let resp = await apiUpdate(stu)
+  // console.log("0000" + resp)
+  if (resp.success) {
+    ElMessage({
+      type: 'success',
+      message: '操作成功',
+    })
+    show.value = false
+    search()
+  }
+  else {
+    ElMessage({
+      message: '操作失败',
+      type: 'warning',
+    })
+  }
+}
+
+function add () {
+  show.value = true
+  dialogTitle.value = '添加医生'
+}
+async function submitAdd (stu) {
+  let resp = await apiSave(stu)
+  // console.log(resp)
+  if (resp.success) {
+    ElMessage({
+      type: 'success',
+      message: '操作成功',
+    })
+    show.value = false
+    search()
+  }
+  else {
+    ElMessage({
+      message: '操作失败',
+      type: 'warning',
+    })
+  }
+}
+const doctorFormModel = ref({
+  subId: "",
+  subName: "",
+  name: "",
+  sex: "",
+  workDate: "",
+  level: "",
+  education: "",
+  about: "",
+  phone: "",
+  photo: "",
+  count: "",
+})
+const sfm = doctorFormModel
+
+//新增修改表单实例
+let sfRef
+//重置表单
+function close () {
+  sfRef.resetFields()
+}
+let dialogTitle = ref()
+function photoSuccess (resp, file) {
+  // console.log(resp.url)
+  if (resp.success) {
+    sfm.value.photo = resp.url
+  }
+  else {
+    ElMessage({
+      message: '上传失败',
+      type: 'warning',
+    })
+  }
+}
+function a () {
+  console.log('a')
+}
+function headercellStyle () {
+  return {
+    backgroundColor: '#f5f7fa',
+    textAlign: 'center',
+    color: "#000"
+  }
+}
+</script>
+<style scoped>
+.photo {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #ccc;
+}
+.photo .icon {
+  width: 100px;
+  height: 100px;
+}
+</style>
+<style>
+.el-popper {
+  max-width: 450px;
+}
+</style>
+

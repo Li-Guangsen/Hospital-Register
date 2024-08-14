@@ -3,6 +3,8 @@ package com.lgs.backend.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 public class Doctor {
@@ -12,10 +14,11 @@ public class Doctor {
     private String about;
     private String photo;
     private String education;
-    private String university;
-    private String major;
-    private String workDate;
+    private String phone;
+    private LocalDate workDate;
     private String level;
-    private int count;
-    private String subId;
+    private Integer count;
+    private Integer subId;
+    private String subName;
+
 }

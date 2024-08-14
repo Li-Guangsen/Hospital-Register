@@ -9,6 +9,6 @@ public class Order {
     private Integer id;
     private Integer patId;
     private Integer schId;
-    private int status;
+    private Integer status;
     private String description;
 }

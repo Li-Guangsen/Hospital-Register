@@ -4,5 +4,91 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lgs.backend.dao.SubjectDao">
 
-
+    <resultMap id="SubjectResultMap" type="Subject">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="sub_code" jdbcType="VARCHAR" property="subCode" />
+        <result column="duty_doctor" jdbcType="VARCHAR" property="dutyDoctor" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="create_time" jdbcType="DATE" property="createTime" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="about" jdbcType="VARCHAR" property="about" />
+    </resultMap>
+    <sql id="selectColumns">
+        select id,
+               sub_code,
+               `name`,
+               duty_doctor,
+               address,
+               create_time,
+               description,
+               about
+        from t_subject
+    </sql>
+    <select id="findAll" resultMap="SubjectResultMap">
+        <include refid="selectColumns"/>
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="dutyDoctor != null and dutyDoctor != ''">
+                and duty_doctor like concat('%', #{dutyDoctor}, '%')
+            </if>
+            <if test="subCode != null and subCode != ''">
+                and sub_code like concat('%', #{subCode}, '%')
+            </if>
+            <if test="address != null and address!= ''">
+                and address like concat('%', #{address}, '%')
+            </if>
+        </where>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="SubjectResultMap">
+        <include refid="selectColumns"/>
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+    <select id="selectSubName" resultType="String">
+        select
+        `name`
+        from t_subject
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+    <select id="selectNames" resultType="Subject">
+        SELECT id, name FROM t_subject
+    </select>
+    <delete id="deleteByPrimaryKey">
+        delete from t_subject
+        where id = #{id}
+    </delete>
+    <insert id="insert" parameterType="Subject">
+        insert into t_subject(`name`,
+                              sub_code,
+                              duty_doctor,
+                              address,
+                              create_time,
+                              description,
+                              about)
+        values (#{name}, #{subCode}, #{dutyDoctor}, #{address}, #{createTime}, #{description},#{about});
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="Subject">
+        update t_subject
+        set name=#{name},
+            sub_code= #{subCode},
+            duty_doctor=#{dutyDoctor},
+            address=#{address},
+            create_time=#{createTime},
+            description=#{description},
+            about=#{about}
+        where id = #{id}
+    </update>
 </mapper>

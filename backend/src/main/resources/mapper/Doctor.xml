@@ -3,6 +3,98 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lgs.backend.dao.DoctorDao">
+    <resultMap id="DoctorResultMap" type="Doctor">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="sex" jdbcType="VARCHAR" property="sex" />
+        <result column="education" jdbcType="VARCHAR" property="education" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="work_date" jdbcType="DATE" property="workDate" />
+        <result column="photo" jdbcType="VARCHAR" property="photo" />
+        <result column="level" jdbcType="VARCHAR" property="level" />
+        <result column="count" jdbcType="INTEGER" property="count" />
+        <result column="sub_id" jdbcType="INTEGER" property="subId" />
+        <result column="about" property="about" />
+        <association column="sub_id" property="subName" jdbcType="VARCHAR" select="com.lgs.backend.dao.SubjectDao.selectSubName">
 
+        </association>
+    </resultMap>
+    <sql id="selectColumns">
+        SELECT id,
+               name,
+               sex,
+               about,
+              photo,
+               education,
+               phone,
+               work_date,
+               level,
+               count,
+               sub_id
+        FROM t_doctor
 
+    </sql>
+    <select id="findAll" resultMap="DoctorResultMap">
+        <include refid="selectColumns"/>
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="subId != null ">
+                and sub_id = #{subId}
+            </if>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone like concat('%', #{phone}, '%')
+            </if>
+            <if test="sex != null and sex!= ''">
+                and sex = #{sex}
+            </if>
+            <if test="level != null and level!= ''">
+                and level = #{level}
+            </if>
+        </where>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="DoctorResultMap">
+        <include refid="selectColumns"/>
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey">
+        delete from t_doctor
+        where id = #{id}
+    </delete>
+    <insert id="insert" parameterType="Doctor">
+        insert into t_doctor(`name`,
+                             sex,
+                             sub_id,
+                             education,
+                             work_date,
+                             photo,
+                             about,
+                             phone,
+                             `level`,
+                             `count`)
+        values (#{name}, #{sex}, #{subId}, #{education}, #{workDate}, #{photo},#{about}, #{phone}, #{level},
+                #{count});
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="Doctor">
+        update t_doctor
+        set name=#{name},
+            sex=#{sex},
+            sub_id=#{subId},
+            education=#{education},
+            work_date=#{workDate},
+            photo=#{photo},
+            phone=#{phone},
+            about=#{about},
+            level=#{level},
+            count=#{count}
+        where id = #{id}
+    </update>
 </mapper>
