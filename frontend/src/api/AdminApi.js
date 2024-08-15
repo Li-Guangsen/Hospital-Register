@@ -1,10 +1,9 @@
 import api from "../utils/api"
-
 //get请求 不能使用请求体传参，只能通过地址栏传参，需要使用params
 async function findAll (pageNo = 1, pageSize = 5, params = {}) {
     // console.log("findAll", pageNo, pageSize, params)
     let resp = await api({
-        url: "/doctors",
+        url: "/users",
         method: "get",
         params: {
             pageNo,
@@ -14,34 +13,27 @@ async function findAll (pageNo = 1, pageSize = 5, params = {}) {
     })
     return resp
 }
-async function findDocNames () {
-    let resp = await api({
-        url: `/doctors/names`,
-        method: "get",
-    });
-    return resp;
-}
 async function deleteById (id) {
     let resp = await api({
-        url: `/doctors/${id}`,
+        url: `/users/${id}`,
         method: "delete",
     });
     return resp;
 }
-async function save (doctor) {
+async function save (adm) {
     let resp = await api({
-        url: "/doctors",
+        url: "/users",
         method: "post",
-        data: doctor
+        data: adm
     })
     return resp;
 }
-async function update (doctor) {
+async function update (adm) {
     let resp = await api({
-        url: "/doctors",
+        url: "/users",
         method: "put",
-        data: doctor
+        data: adm
     })
     return resp;
 }
-export { findAll, deleteById, save, update, findDocNames }
+export { findAll, deleteById, save, update }

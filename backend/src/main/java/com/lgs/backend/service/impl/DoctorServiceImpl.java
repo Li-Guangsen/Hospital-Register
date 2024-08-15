@@ -22,7 +22,11 @@ public class DoctorServiceImpl implements DoctorService {
         try (Page<?> __ = PageHelper.startPage(paginateInfo.getPageNo(),paginateInfo.getPageSize())) {
             return doctorDao.findAll(doctor);
         }
+    }
 
+    @Override
+    public List<Doctor> getDoctorNames() {
+        return doctorDao.selectNames();
     }
 
     @Override

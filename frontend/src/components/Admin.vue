@@ -7,26 +7,11 @@
         <el-form-item label="主键" prop="id">
           <el-input placeholder="请输入ID" v-model="sm.id" />
         </el-form-item>
-        <el-form-item label="名称" prop="name">
-          <el-input placeholder="请输入科室名称" v-model="sm.name" />
+        <el-form-item label="账号" prop="username">
+          <el-input placeholder="请输入管理员账号" v-model="sm.username" />
         </el-form-item>
-        <el-form-item label="代码" prop="subCode">
-          <el-input placeholder="请输入科室代码" v-model="sm.subCode" />
-        </el-form-item>
-        <!-- <el-form-item label="负责医师" prop="dutyDoctor">
-          <el-input placeholder="请输入医师姓名" v-model="sm.dutyDoctor" />
-        </el-form-item> -->
-        <el-form-item label="地址" prop="address">
-          <el-input placeholder="请输入地址" v-model="sm.address" />
-        </el-form-item>
-        <el-form-item label="晚于日期筛选" prop="createTime">
-          <el-date-picker
-            v-model="sm.createTime"
-            type="date"
-            value-format="YYYY-MM-DD"
-            placeholder="请输入日期"
-            :width="650"
-          />
+        <el-form-item label="姓名" prop="name">
+          <el-input placeholder="请输入管理员姓名" v-model="sm.name" />
         </el-form-item>
       </el-form>
     </div>
@@ -49,22 +34,13 @@
           style="width: 100%"
           :header-cell-style="headercellStyle"
         >
-          <el-table-column prop="id" label="ID" width="60" />
-          <el-table-column prop="name" label="科室名称" width="120" />
-          <el-table-column prop="subCode" label="科室代码" width="100" />
-          <!-- <el-table-column prop="dutyDoctor" label="负责医师" width="100" /> -->
-          <el-table-column prop="address" label="科室地址" width="100" />
-          <el-table-column prop="createTime" label="创立日期" width="110" />
-          <el-table-column
-            prop="about"
-            label="历程"
-            width="470"
-            show-overflow-tooltip
-          />
+          <el-table-column prop="id" label="ID" width="80" />
+          <el-table-column prop="name" label="管理员姓名" width="250" />
+          <el-table-column prop="username" label="账号" width="250" />
           <el-table-column
             prop="description"
-            label="信息"
-            width="470"
+            label="备注"
+            width="500"
             show-overflow-tooltip
           />
           <el-table-column label="操作">
@@ -101,7 +77,7 @@
     <el-dialog
       v-model="show"
       :title="dialogTitle"
-      width="640"
+      width="500"
       draggable
       :close-on-click-modal="false"
       @closed="close"
@@ -109,58 +85,30 @@
       <!-- 新增操作表单 -->
       <el-form :model="sfm" ref="sfRef">
         <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="科室代码:" label-width="100" prop="subCode">
-              <el-input v-model="sfm.subCode" placeholder="请输入科室代码" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="科室名称:" label-width="100" prop="name">
-              <el-input
-                v-model="sfm.name"
-                placeholder="请输入科室名称"
-              /> </el-form-item
-          ></el-col>
+          <el-col :span="12"> </el-col>
+          <el-col :span="12"> </el-col>
         </el-row>
-        <el-row :gutter="20">
-          <!-- <el-col :span="11"
-            ><el-form-item label="负责医师:" label-width="45" prop="dutyDoctor">
-              <el-input
-                v-model="sfm.dutyDoctor"
-                placeholder="请输入负责医师"
-              /> </el-form-item
-          ></el-col> -->
-          <el-col :span="12"
-            ><el-form-item
-              label="创立日期:"
-              label-width="100"
-              prop="createTime"
-            >
-              <el-date-picker
-                v-model="sfm.createTime"
-                type="date"
-                placeholder="请输入创立日期"
-                value-format="YYYY-MM-DD"
-                :width="650"
-              /> </el-form-item
-          ></el-col>
-          <el-col :span="12"
-            ><el-form-item label="地址:" label-width="100" prop="address">
-              <el-input
-                v-model="sfm.address"
-                placeholder="请输入科室地址"
-              /> </el-form-item
-          ></el-col>
-        </el-row>
-        <el-form-item label="历程:" label-width="60" prop="about">
+        <el-form-item label="账号:" label-width="120" prop="username">
           <el-input
-            v-model="sfm.about"
-            :rows="8"
-            type="textarea"
-            placeholder="请输入历程"
+            v-model="sfm.username"
+            style="width: 300px"
+            placeholder="请输入账号"
           />
         </el-form-item>
-        <el-form-item label="信息:" label-width="60" prop="description">
+        <el-form-item label="密码:" label-width="120" prop="password">
+          <el-input
+            v-model="sfm.password"
+            placeholder="请输入密码"
+            style="width: 300px"
+          /> </el-form-item
+        ><el-form-item label="姓名:" label-width="120" prop="name">
+          <el-input
+            v-model="sfm.name"
+            style="width: 300px"
+            placeholder="请输入管理员姓名"
+          />
+        </el-form-item>
+        <el-form-item label="信息:" label-width="45" prop="description">
           <el-input
             v-model="sfm.description"
             :rows="8"
@@ -181,14 +129,14 @@
 </template>
 <script setup>
 import { Plus, Delete, Edit, Refresh, Search, Share, Upload, } from '@element-plus/icons-vue'
-import { findAll as apiFindAll, deleteById as apiDeleteById, save as apiSave, update as apiUpdate } from "../api/SubjectApi"
+import { findAll as apiFindAll, deleteById as apiDeleteById, save as apiSave, update as apiUpdate } from "../api/AdminApi"
 import { nextTick, onMounted, ref, toRaw } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 //当组件加载完成后，自动调用findAll方法
 onMounted(async () => {
   search()
-  document.title = '科室管理'
+  document.title = '管理员管理'
 })
 const tableData = ref()
 // 前两项是双向数据绑定
@@ -212,11 +160,8 @@ function paginate () {
 //查询条件引用
 const sm = ref({
   id: '',
-  subCode: '',
   name: "",
-  dutyDoctor: "",
-  address: "",
-  createTime: "",
+  username: "",
 })
 //查询表单实例引用
 let searchFromRef
@@ -238,7 +183,7 @@ function deleteRow (row) {
 }
 function deleteById (id) {
   ElMessageBox.confirm(
-    '是否确认删除选中科室数据?',
+    '是否确认删除选中管理员数据?',
     '删除确认',
     {
       type: 'warning',
@@ -271,7 +216,7 @@ function editRow (row) {
   row = Object.assign({}, row)
   // console.log(row)
   show.value = true
-  dialogTitle.value = '修改科室信息'
+  dialogTitle.value = '修改管理员信息'
   nextTick(() => {
     sfm.value = row
   })
@@ -300,7 +245,7 @@ function add () {
   sfm.value.id = ''
   // console.log(sfm.value)
   show.value = true
-  dialogTitle.value = '添加科室'
+  dialogTitle.value = '添加管理员'
 }
 async function submitAdd (stu) {
   let resp = await apiSave(stu)
@@ -320,16 +265,13 @@ async function submitAdd (stu) {
     })
   }
 }
-const subjectFormModel = ref({
-  subCode: "",
+const adminFormModel = ref({
   name: "",
-  dutyDoctor: "",
-  createTime: "",
+  username: "",
+  password: "",
   description: "",
-  about: "",
-  adress: ""
 })
-const sfm = subjectFormModel
+const sfm = adminFormModel
 
 //新增修改表单实例
 let sfRef
@@ -351,7 +293,7 @@ function headercellStyle () {
 </script>
 <style>
 .el-popper {
-  max-width: 440px;
+  max-width: 470px;
 }
 </style>
 

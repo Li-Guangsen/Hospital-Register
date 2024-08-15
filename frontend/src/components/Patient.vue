@@ -7,38 +7,23 @@
         <el-form-item label="主键" prop="id">
           <el-input placeholder="请输入ID" v-model="sm.id" />
         </el-form-item>
-
-        <el-form-item label="姓名" prop="name">
-          <el-input placeholder="请输入医生姓名" v-model="sm.name" />
-        </el-form-item>
-        <el-form-item label="科室" prop="subId">
-          <el-select
-            placeholder="请选择科室"
-            style="width: 300px"
-            v-model="sm.subId"
-          >
-            <el-option key="0" label="不限" value="" />
-            <el-option
-              v-for="department in departments"
-              :key="department.id"
-              :label="department.name"
-              :value="department.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="性别" prop="sex">
-          <el-select
-            placeholder="请选择医生性别"
-            style="width: 100px"
-            v-model="sm.sex"
-          >
-            <el-option key="0" label="不限" value="" />
-            <el-option key="1" label="男" value="男" />
-            <el-option key="2" label="女" value="女" />
-          </el-select>
-        </el-form-item>
         <el-form-item label="手机号" prop="phone">
-          <el-input placeholder="请输入医生手机号" v-model="sm.phone" />
+          <el-input placeholder="请输入病人手机号" v-model="sm.phone" />
+        </el-form-item>
+        <el-form-item label="姓名" prop="name">
+          <el-input placeholder="请输入病人姓名" v-model="sm.name" />
+        </el-form-item>
+        <el-form-item label="出生日期" prop="birthRange">
+          <el-date-picker
+            type="daterange"
+            v-model="sm.birthRange"
+            value-format="YYYY-MM-DD"
+            start-placeholder="Start date"
+            end-placeholder="End date"
+          />
+        </el-form-item>
+        <el-form-item label="身份证号" prop="idNumber">
+          <el-input placeholder="请输入病人身份证" v-model="sm.idNumber" />
         </el-form-item>
       </el-form>
     </div>
@@ -68,25 +53,16 @@
               <el-image style="width: 100%; height: 100%" :src="row.photo" />
             </template>
           </el-table-column>
+          <el-table-column prop="sex" label="性别" width="80" />
+          <el-table-column prop="idNumber" label="身份证号" width="220" />
+          <el-table-column prop="birth" label="生日" width="140" />
+          <el-table-column prop="phone" label="手机号" width="180" />
           <el-table-column
-            v-if="false"
-            prop="subId"
-            label="科室号"
-            width="80"
-          />
-          <el-table-column prop="subject.name" label="科室" width="110" />
-          <el-table-column prop="sex" label="性别" width="60" />
-          <el-table-column prop="workDate" label="入职日期" width="110" />
-          <el-table-column prop="level" label="职称" width="120" />
-          <el-table-column prop="education" label="学历" width="120" />
-          <el-table-column prop="phone" label="手机号" width="160" />
-          <el-table-column
-            prop="about"
-            label="信息"
+            prop="description"
+            label="备注"
             width="480"
             show-overflow-tooltip
           />
-          <el-table-column prop="money" label="挂号费" width="80" />
           <el-table-column label="操作">
             <template #default="scope">
               <el-button size="small" @click="editRow(scope.row)">
@@ -129,33 +105,26 @@
       <!-- 新增操作表单 -->
       <el-form :model="sfm" ref="sfRef">
         <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="科室:" label-width="70" prop="subId">
-              <el-select
-                placeholder="请选择科室"
-                style="width: 300px"
-                v-model="sfm.subId"
-              >
-                <el-option
-                  v-for="department in departments"
-                  :key="department.id"
-                  :label="department.name"
-                  :value="department.id"
-                />
-              </el-select>
+          <el-col :span="12"
+            ><el-form-item label="手机号:" label-width="80" prop="phone">
+              <el-input v-model="sfm.phone" placeholder="请输入病人手机号" />
             </el-form-item>
-            <el-form-item label="姓名:" label-width="70" prop="name">
-              <el-input v-model="sfm.name" placeholder="请输入医生姓名" />
-            </el-form-item>
-            <el-form-item label="性别:" label-width="70" prop="sex">
-              <el-select v-model="sfm.sex" placeholder="请选择医生性别">
+            <el-form-item label="密码:" label-width="80" prop="password">
+              <el-input
+                v-model="sfm.password"
+                placeholder="请输入密码"
+              /> </el-form-item
+            ><el-form-item label="姓名:" label-width="80" prop="name">
+              <el-input
+                v-model="sfm.name"
+                placeholder="请输入病人姓名"
+              /> </el-form-item
+            ><el-form-item label="性别:" label-width="80" prop="sex">
+              <el-select v-model="sfm.sex" placeholder="请选择病人性别">
                 <el-option label="男" value="男" />
                 <el-option label="女" value="女" />
               </el-select> </el-form-item
-            ><el-form-item label="学历:" label-width="70" prop="education">
-              <el-input v-model="sfm.education" placeholder="请输入医生学历" />
-            </el-form-item>
-          </el-col>
+          ></el-col>
           <el-col :span="12">
             <el-form-item label="头像:" label-width="100" prop="photo">
               <el-upload
@@ -182,45 +151,27 @@
         </el-row>
 
         <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="挂号费:" label-width="70" prop="money">
+          <el-col :span="12"
+            ><el-form-item label="身份证号:" label-width="80" prop="idNumber">
               <el-input
-                v-model="sfm.money"
-                placeholder="请输入挂号费"
+                v-model="sfm.idNumber"
+                placeholder="请输入身份证号"
               /> </el-form-item
           ></el-col>
           <el-col :span="12"
-            ><el-form-item label="入职日期:" label-width="100" prop="workDate">
+            ><el-form-item label="出生日期:" label-width="100" prop="birth">
               <el-date-picker
-                v-model="sfm.workDate"
+                v-model="sfm.birth"
                 type="date"
-                placeholder="请选择入职日期"
+                placeholder="请选择出生日期"
                 :width="650"
                 style="width: 180px"
               /> </el-form-item
           ></el-col>
         </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12"
-            ><el-form-item label="职称 :" label-width="70" prop="level">
-              <el-input
-                v-model="sfm.level"
-                placeholder="请输入职称"
-              /> </el-form-item
-          ></el-col>
-          <el-col :span="12"
-            ><el-form-item label="手机号:" label-width="100" prop="phone">
-              <el-input
-                v-model="sfm.phone"
-                placeholder="请输入医生手机号"
-                style="width: 180px"
-              /> </el-form-item
-          ></el-col>
-        </el-row>
-
-        <el-form-item label="信息:" label-width="45" prop="about">
+        <el-form-item label="信息:" label-width="60" prop="description">
           <el-input
-            v-model="sfm.about"
+            v-model="sfm.description"
             :rows="8"
             type="textarea"
             placeholder="请输入信息"
@@ -239,18 +190,15 @@
 </template>
 <script setup>
 import { Plus, Delete, Edit, Refresh, Search, Share, Upload, } from '@element-plus/icons-vue'
-import { findAll as apiFindAll, deleteById as apiDeleteById, save as apiSave, update as apiUpdate } from '@/api/DoctorApi'
-import { findSubNames } from '@/api/SubjectApi'
+import { findAll as apiFindAll, deleteById as apiDeleteById, save as apiSave, update as apiUpdate } from '@/api/PatientApi'
 import { nextTick, onMounted, ref, toRaw } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { descriptionProps, ElMessage, ElMessageBox } from 'element-plus'
 
 //当组件加载完成后，自动调用findAll方法
 onMounted(async () => {
   search()
-  departments.value = await findSubNames()
-  document.title = '医生管理'
+  document.title = '用户管理'
 })
-const departments = ref([])
 const tableData = ref()
 // 前两项是双向数据绑定
 const pi = ref({
@@ -259,10 +207,11 @@ const pi = ref({
   total: 1000
 })
 async function search () {
+  // console.log(sm.value)
   let params = sm.value
   // console.log(params)
   let resp = await apiFindAll(pi.value.pageNo, pi.value.pageSize, params)
-  //   console.log(resp)
+  // console.log(resp.rows)
   tableData.value = resp.rows
   pi.value = resp.pi
 }
@@ -273,10 +222,10 @@ function paginate () {
 //查询条件引用
 const sm = ref({
   id: '',
-  subId: '',
+  idNumber: '',
   name: "",
-  sex: "",
   phone: "",
+  birthRange: "",
 })
 //查询表单实例引用
 let searchFromRef
@@ -298,7 +247,7 @@ function deleteRow (row) {
 }
 function deleteById (id) {
   ElMessageBox.confirm(
-    '是否确认删除选中医生数据?',
+    '是否确认删除选中病人数据?',
     '删除确认',
     {
       type: 'warning',
@@ -330,7 +279,7 @@ function editRow (row) {
   //克隆防止修改数据时影响原数据
   row = Object.assign({}, row)
   show.value = true
-  dialogTitle.value = '修改医生信息'
+  dialogTitle.value = '修改病人信息'
   nextTick(() => {
     sfm.value = row
   })
@@ -357,7 +306,7 @@ async function submitEdit (stu) {
 function add () {
   sfm.value.id = ''
   show.value = true
-  dialogTitle.value = '添加医生'
+  dialogTitle.value = '添加病人'
 }
 async function submitAdd (stu) {
   let resp = await apiSave(stu)
@@ -377,20 +326,17 @@ async function submitAdd (stu) {
     })
   }
 }
-const doctorFormModel = ref({
-  subId: "",
-  subject: "",
+const patientFormModel = ref({
+  password: "",
   name: "",
   sex: "",
-  workDate: "",
-  level: "",
-  education: "",
-  about: "",
+  birth: "",
+  idNumber: "",
   phone: "",
   photo: "",
-  money: "",
+  description: "",
 })
-const sfm = doctorFormModel
+const sfm = patientFormModel
 
 //新增修改表单实例
 let sfRef

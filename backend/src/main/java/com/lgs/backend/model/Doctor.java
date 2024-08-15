@@ -3,6 +3,7 @@ package com.lgs.backend.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -17,8 +18,8 @@ public class Doctor {
     private String phone;
     private LocalDate workDate;
     private String level;
-    private Integer count;
+    private BigDecimal money;
     private Integer subId;
-    private String subName;
+    private Subject subject;
 
 }

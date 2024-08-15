@@ -3,6 +3,65 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lgs.backend.dao.ScheduleDao">
-
-
+    <resultMap id="ScheduleResultMap" type="Schedule">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="doctor_id" jdbcType="INTEGER" property="doctorId"/>
+        <result column="count" jdbcType="INTEGER" property="count"/>
+        <result column="description" property="description"/>
+        <result column="work_time" jdbcType="DATE" property="workTime"/>
+        <association column="doctor_id" property="doctor" select="com.lgs.backend.dao.DoctorDao.selectByPrimaryKey"/>
+    </resultMap>
+    <sql id="selectColumns">
+        SELECT id,
+               doctor_id,
+               count,
+               description,
+               work_time
+        FROM t_schedule
+    </sql>
+    <select id="findAll" resultMap="ScheduleResultMap">
+        <include refid="selectColumns"/>
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="count != null">
+                and count &gt;= #{count}
+            </if>
+            <if test="workTime != null ">
+                and work_time = #{workTime}
+            </if>
+            <if test="doctorName != null and doctorName != ''">
+                and doctor_id in (select id from t_doctor where name like concat('%', #{doctorName}, '%'))
+            </if>
+            <if test="subId != null ">
+                and doctor_id in (select id from t_doctor where sub_id = #{subId})
+            </if>
+        </where>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="ScheduleResultMap">
+        <include refid="selectColumns"/>
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey">
+        delete
+        from t_schedule
+        where id = #{id}
+    </delete>
+    <insert id="insert" parameterType="Schedule">
+        insert into t_schedule (doctor_id, count, description, work_time)
+        values (#{doctorId}, #{count}, #{description}, #{workTime})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="Schedule">
+        update t_schedule
+        set doctor_id = #{doctorId},
+            count = #{count},
+            description = #{description},
+            work_time = #{workTime}
+        where id = #{id}
+    </update>
 </mapper>

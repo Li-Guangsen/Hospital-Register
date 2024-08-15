@@ -5,11 +5,11 @@
       ><el-menu
         active-text-color="#ffd04b"
         background-color="#545c64"
-        default-active="/main/subject"
         text-color="#fff"
         style="border-right: none"
         :router="true"
       >
+        <!-- default-active="/main/subject" -->
         <template v-for="menu in menus">
           <el-sub-menu
             v-if="menu.children"
@@ -36,7 +36,7 @@
       <!-- 头部 -->
       <el-header class="header"
         ><div class="logo"></div>
-        <div class="title"><h1>医院门诊预约管理系统</h1></div>
+        <div class="title"><h1>汉东省人民医院门诊预约系统</h1></div>
       </el-header>
       <!-- 主体 -->
       <el-main class="main">
@@ -68,7 +68,8 @@
   flex-shrink: 0;
   box-sizing: border-box;
   padding: 5px;
-  background: url("../../public/logo.png") no-repeat center center/contain;
+  background: url("../../public/logo-modified.png") no-repeat center
+    center/contain;
 }
 .header > .session {
   width: 150px;
@@ -97,6 +98,15 @@ const menus = ref([{
 }, {
   title: '科室管理',
   url: '/main/subject'
+}, {
+  title: '排班管理',
+  url: '/main/schedule'
+}, {
+  title: '用户管理',
+  url: '/main/patient'
+}, {
+  title: '管理员管理',
+  url: '/main/admin'
 }])
 
 

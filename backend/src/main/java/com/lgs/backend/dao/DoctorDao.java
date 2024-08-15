@@ -8,6 +8,7 @@ import java.util.List;
 @Mapper
 public interface DoctorDao {
     List<Doctor> findAll(Doctor doctor);
+    List<Doctor> selectNames();
     int deleteByPrimaryKey(Integer id);
     int insert(Doctor doctor);
     Doctor selectByPrimaryKey(Integer id);

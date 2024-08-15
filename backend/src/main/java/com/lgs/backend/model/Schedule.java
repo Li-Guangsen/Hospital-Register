@@ -3,17 +3,16 @@ package com.lgs.backend.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 public class Schedule {
     private Integer id;
     private Integer doctorId;
-    private BigDecimal money;
-    private Integer status;
+    private Integer count;
     private String description;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalDate workTime;
+
+    private Doctor doctor;
 }

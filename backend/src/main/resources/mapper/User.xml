@@ -3,6 +3,53 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lgs.backend.dao.UserDao">
-
-
+    <sql id="selectColumns">
+        SELECT id,
+               username,
+               name,
+               description
+        FROM t_user
+    </sql>
+    <select id="findAll" resultType="User">
+        <include refid="selectColumns"/>
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="username != null and username != ''">
+                and username like concat('%', #{username}, '%')
+            </if>
+            <if test="name != null and name!= ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+        </where>
+    </select>
+    <select id="selectByPrimaryKey" resultType="User">
+        <include refid="selectColumns"/>
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey">
+        delete
+        from t_user
+        where id = #{id}
+    </delete>
+    <insert id="insert" parameterType="User">
+        insert into t_user(username,
+                           password,
+                           name,
+                           description)
+        values (#{username}, #{password}, #{name}, #{description});
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="User">
+        update t_user
+        set name=#{name},
+            password=#{password},
+            username=#{username},
+            description=#{description}
+        where id = #{id}
+    </update>
 </mapper>

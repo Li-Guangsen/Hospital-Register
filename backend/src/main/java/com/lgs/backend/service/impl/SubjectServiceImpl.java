@@ -3,7 +3,6 @@ package com.lgs.backend.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.lgs.backend.dao.SubjectDao;
-import com.lgs.backend.model.Doctor;
 import com.lgs.backend.model.Subject;
 import com.lgs.backend.service.SubjectService;
 import com.lgs.backend.utils.PaginateInfo;
@@ -35,6 +34,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public boolean addSubject(Subject subject) {
+        System.out.println("addddddd");
         return subjectDao.insert(subject)>0;
     }
 

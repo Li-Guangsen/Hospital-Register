@@ -1,7 +1,10 @@
 package com.lgs.backend.api;
 
+import com.github.pagehelper.PageInfo;
 import com.lgs.backend.model.Patient;
+import com.lgs.backend.model.PatientSearchBean;
 import com.lgs.backend.service.PatientService;
+import com.lgs.backend.utils.PaginateInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +25,16 @@ public class PatientApi {
         this.patientService = patientService;
     }
     @GetMapping
-    public List<Patient> getPatientAll() {
-        LOGGER.info("查询全部信息");
-        return patientService.getPatientAll();
+    public Map<String,Object> getPatientAll(@RequestParam(defaultValue = "1") Integer pageNo,
+                                            @RequestParam(defaultValue = "1000") Integer pageSize,
+                                            PatientSearchBean psb) {
+        LOGGER.info("查询全部病人信息");
+        PaginateInfo paginateInfo = new PaginateInfo(pageNo,pageSize);
+        List<Patient> patients = patientService.getPatientAll(paginateInfo,psb);
+//        System.out.println("patients: "+ patients.get(0).getIdNumber()+patients.get(0).getName());
+        PageInfo<Patient> pageInfo = new PageInfo<>(patients);
+        Map<String,Object> map = Map.of("pageNo",pageInfo.getPageNum(),"pageSize",pageInfo.getPageSize(),"total",pageInfo.getTotal());
+        return Map.of("success",true,"rows", patients,"pi",map);
     }
     @GetMapping("/{id}")
     public Patient getPatientById(@PathVariable Integer id) {

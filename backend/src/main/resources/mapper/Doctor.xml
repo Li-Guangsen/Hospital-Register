@@ -4,35 +4,32 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lgs.backend.dao.DoctorDao">
     <resultMap id="DoctorResultMap" type="Doctor">
-        <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="name" jdbcType="VARCHAR" property="name" />
-        <result column="sex" jdbcType="VARCHAR" property="sex" />
-        <result column="education" jdbcType="VARCHAR" property="education" />
-        <result column="phone" jdbcType="VARCHAR" property="phone" />
-        <result column="work_date" jdbcType="DATE" property="workDate" />
-        <result column="photo" jdbcType="VARCHAR" property="photo" />
-        <result column="level" jdbcType="VARCHAR" property="level" />
-        <result column="count" jdbcType="INTEGER" property="count" />
-        <result column="sub_id" jdbcType="INTEGER" property="subId" />
-        <result column="about" property="about" />
-        <association column="sub_id" property="subName" jdbcType="VARCHAR" select="com.lgs.backend.dao.SubjectDao.selectSubName">
-
-        </association>
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="education" jdbcType="VARCHAR" property="education"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="work_date" jdbcType="DATE" property="workDate"/>
+        <result column="photo" jdbcType="VARCHAR" property="photo"/>
+        <result column="level" jdbcType="VARCHAR" property="level"/>
+        <result column="money" jdbcType="DECIMAL" property="money"/>
+        <result column="sub_id" jdbcType="INTEGER" property="subId"/>
+        <result column="about" property="about"/>
+        <association column="sub_id" property="subject" select="com.lgs.backend.dao.SubjectDao.selectById"/>
     </resultMap>
     <sql id="selectColumns">
         SELECT id,
                name,
                sex,
                about,
-              photo,
+               photo,
                education,
                phone,
                work_date,
                level,
-               count,
+               money,
                sub_id
         FROM t_doctor
-
     </sql>
     <select id="findAll" resultMap="DoctorResultMap">
         <include refid="selectColumns"/>
@@ -66,9 +63,13 @@
         </where>
     </select>
     <delete id="deleteByPrimaryKey">
-        delete from t_doctor
+        delete
+        from t_doctor
         where id = #{id}
     </delete>
+    <select id="selectNames" resultMap="DoctorResultMap" >
+        SELECT id, name,sub_id FROM t_doctor
+    </select>
     <insert id="insert" parameterType="Doctor">
         insert into t_doctor(`name`,
                              sex,
@@ -79,9 +80,9 @@
                              about,
                              phone,
                              `level`,
-                             `count`)
-        values (#{name}, #{sex}, #{subId}, #{education}, #{workDate}, #{photo},#{about}, #{phone}, #{level},
-                #{count});
+                             `money`)
+        values (#{name}, #{sex}, #{subId}, #{education}, #{workDate}, #{photo}, #{about}, #{phone}, #{level},
+                #{money});
     </insert>
     <update id="updateByPrimaryKey" parameterType="Doctor">
         update t_doctor
@@ -94,7 +95,7 @@
             phone=#{phone},
             about=#{about},
             level=#{level},
-            count=#{count}
+            money=#{money}
         where id = #{id}
     </update>
 </mapper>

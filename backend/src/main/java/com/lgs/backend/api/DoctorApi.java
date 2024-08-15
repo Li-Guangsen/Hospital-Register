@@ -2,6 +2,7 @@ package com.lgs.backend.api;
 
 import com.github.pagehelper.PageInfo;
 import com.lgs.backend.model.Doctor;
+import com.lgs.backend.model.Subject;
 import com.lgs.backend.service.DoctorService;
 import com.lgs.backend.utils.PaginateInfo;
 import org.slf4j.Logger;
@@ -38,6 +39,10 @@ public class DoctorApi {
     @GetMapping("/{id}")
     public Doctor getDoctorById(@PathVariable Integer id) {
         return doctorService.getDoctorById(id);
+    }
+    @GetMapping("/names")
+    public List<Doctor> getSubjectNames() {
+        return doctorService.getDoctorNames();
     }
     @PostMapping()
     public ResponseEntity<Map<String, Object>> addDoctor(@RequestBody Doctor doctor) {
