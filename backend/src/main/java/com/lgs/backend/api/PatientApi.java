@@ -40,6 +40,10 @@ public class PatientApi {
     public Patient getPatientById(@PathVariable Integer id) {
         return patientService.getPatientById(id);
     }
+    @GetMapping("/count")
+    public int getPatientCount() {
+        return patientService.getPatientCount();
+    }
     @PostMapping
     public ResponseEntity<Map<String, Object>> addPatient(@RequestBody Patient patient) {
         boolean success = patientService.addPatient(patient);
@@ -53,6 +57,11 @@ public class PatientApi {
     @PutMapping
     public ResponseEntity<Map<String, Object>> updatePatient(@RequestBody Patient patient) {
         boolean success = patientService.updatePatient(patient);
+        return ResponseEntity.ok(Map.of("success", success));
+    }
+    @PutMapping("/password")
+    public ResponseEntity<Map<String, Object>> updatePassword(@RequestBody Patient patient) {
+        boolean success = patientService.updatePassword(patient);
         return ResponseEntity.ok(Map.of("success", success));
     }
 

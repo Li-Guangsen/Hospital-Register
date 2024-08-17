@@ -52,4 +52,9 @@ public class SubjectServiceImpl implements SubjectService {
     public List<Subject> getSubjectNames() {
         return subjectDao.selectNames();
     }
+
+    @Override
+    public int getSubjectCount() {
+        return subjectDao.count();
+    }
 }

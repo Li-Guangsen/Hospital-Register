@@ -77,6 +77,9 @@
     <select id="selectNames" resultType="Subject">
         SELECT id, name FROM t_subject
     </select>
+    <select id="count" resultType="int">
+        select count(1) from t_subject
+    </select>
     <delete id="deleteByPrimaryKey">
         delete from t_subject
         where id = #{id}

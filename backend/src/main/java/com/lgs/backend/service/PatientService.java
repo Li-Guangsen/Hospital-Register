@@ -10,6 +10,8 @@ public interface PatientService {
     List<Patient> getPatientAll(PaginateInfo paginateInfo, PatientSearchBean psb);
     Patient getPatientById(Integer id);
     boolean updatePatient(Patient patient);
+    boolean updatePassword(Patient patient);
     boolean deletePatient(Integer id);
     boolean addPatient(Patient patient);
+    int getPatientCount();
 }

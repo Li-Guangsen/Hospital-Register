@@ -3,14 +3,16 @@ package com.lgs.backend.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
-public class Order {
+public class OrderSearchBean {
     private Integer id;
     private Integer patId;
-    private Integer schId;
+    private String patientName;
+    private Integer doctorId;
+    private LocalDate workTime;
     private String status;
-    private String description;
-    private Schedule schedule;
-    private Patient patient;
+
 }

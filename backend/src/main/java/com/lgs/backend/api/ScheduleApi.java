@@ -1,6 +1,7 @@
 package com.lgs.backend.api;
 
 import com.github.pagehelper.PageInfo;
+import com.lgs.backend.model.Order;
 import com.lgs.backend.model.Schedule;
 import com.lgs.backend.model.ScheduleSearchBean;
 import com.lgs.backend.service.ScheduleService;
@@ -41,6 +42,11 @@ public class ScheduleApi {
     @PostMapping
     public ResponseEntity<Map<String, Object>> addSchedule(@RequestBody Schedule schedule) {
         boolean success = scheduleService.addSchedule(schedule);
+        return ResponseEntity.ok(Map.of("success", success));
+    }
+    @PostMapping("/addOrder")
+    public ResponseEntity<Map<String, Object>> addOrder(@RequestBody Order order) {
+        boolean success = scheduleService.addOrder(order);
         return ResponseEntity.ok(Map.of("success", success));
     }
     @DeleteMapping("/{id}")

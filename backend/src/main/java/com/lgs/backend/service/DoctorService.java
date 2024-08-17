@@ -12,4 +12,5 @@ public interface DoctorService {
     boolean addDoctor(Doctor doctor);
     boolean updateDoctor(Doctor doctor);
     boolean deleteDoctor(Integer id);
+    int getDoctorCount();
 }

@@ -9,7 +9,6 @@
         style="border-right: none"
         :router="true"
       >
-        <!-- default-active="/main/subject" -->
         <template v-for="menu in menus">
           <el-sub-menu
             v-if="menu.children"
@@ -37,6 +36,24 @@
       <el-header class="header"
         ><div class="logo"></div>
         <div class="title"><h1>汉东省人民医院门诊预约系统</h1></div>
+        <div class="session">
+          <el-menu
+            :default-active="activeIndex"
+            background-color="#f3fcfe"
+            style="border-bottom: 1px solid #ebeef5"
+            class="el-menu-demo"
+            mode="horizontal"
+            :ellipsis="false"
+            @select="userMenuSelect"
+          >
+            <el-sub-menu index="uesr">
+              <template #title>Admin</template>
+              <el-menu-item index="2-1">item one</el-menu-item>
+              <el-menu-item index="2-2">item two</el-menu-item>
+              <el-menu-item index="logout">logout</el-menu-item>
+            </el-sub-menu>
+          </el-menu>
+        </div>
       </el-header>
       <!-- 主体 -->
       <el-main class="main">
@@ -54,11 +71,13 @@
   background-color: #545c64;
 }
 .header {
+  height: 60px;
   background-color: #f3fcfe;
   border-bottom: 1px solid #ebeef5;
   display: flex;
   flex-direction: row;
   padding-left: 6px;
+  padding-right: 0px;
 }
 .header > .title {
   flex-grow: 1;
@@ -72,6 +91,7 @@
     center/contain;
 }
 .header > .session {
+  height: 100%;
   width: 150px;
   flex-shrink: 0;
   z-index: 999;
@@ -82,32 +102,42 @@
 <script setup>
 import { ref } from 'vue'
 import { Setting, User } from '@element-plus/icons-vue'
-import { onBeforeRouteUpdate } from 'vue-router';
+import { clear as removeJwt } from "../api/JwtApi"
 import { useRouter } from 'vue-router'
 // 侧栏菜单数据
-const menus = ref([{
-  title: '预约管理',
-  url: '/book',
-  children: [
-    { title: '预约列表', url: '/book/list' },
-    { title: '数据统计', url: '/book/stat' }
-  ]
-}, {
-  title: '医生管理',
-  url: '/main/doctor'
-}, {
-  title: '科室管理',
-  url: '/main/subject'
-}, {
-  title: '排班管理',
-  url: '/main/schedule'
-}, {
-  title: '用户管理',
-  url: '/main/patient'
-}, {
-  title: '管理员管理',
-  url: '/main/admin'
-}])
+const menus = ref([
+  { title: '数据看板', url: '/main/dashboard' },
+  {
+    title: '挂号管理',
+    url: '/main',
+    children: [
+      { title: '患者挂号', url: '/main/book' },
+      { title: '挂号列表', url: '/main/order' },
 
+    ]
+  }, {
+    title: '医生管理',
+    url: '/main/doctor'
+  }, {
+    title: '科室管理',
+    url: '/main/subject'
+  }, {
+    title: '排班管理',
+    url: '/main/schedule'
+  }, {
+    title: '用户管理',
+    url: '/main/patient'
+  }, {
+    title: '管理员管理',
+    url: '/main/admin'
+  }])
+const router = useRouter()
+function userMenuSelect (menu) {
+  if (menu === 'logout') {
+    // console.log('logout')
+    removeJwt()
+    router.push('/empty')
+  }
+}
 
 </script>

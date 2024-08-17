@@ -63,7 +63,7 @@
           />
           <el-table-column
             prop="description"
-            label="信息"
+            label="简介"
             width="470"
             show-overflow-tooltip
           />
@@ -160,12 +160,12 @@
             placeholder="请输入历程"
           />
         </el-form-item>
-        <el-form-item label="信息:" label-width="60" prop="description">
+        <el-form-item label="简介:" label-width="60" prop="description">
           <el-input
             v-model="sfm.description"
             :rows="8"
             type="textarea"
-            placeholder="请输入信息"
+            placeholder="请输入简介"
           />
         </el-form-item>
       </el-form>

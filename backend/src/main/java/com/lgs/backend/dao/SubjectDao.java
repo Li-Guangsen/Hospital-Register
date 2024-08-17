@@ -14,5 +14,6 @@ public interface SubjectDao {
     int updateByPrimaryKey(Subject subject);
     String selectSubName(Integer id);
     List<Subject> selectNames();
+    int count();
 
 }

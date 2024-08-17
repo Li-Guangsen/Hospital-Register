@@ -12,5 +12,6 @@ public interface PatientDao {
     int insert(Patient patient);
     Patient selectByPrimaryKey(Integer id);
     int updateByPrimaryKey(Patient patient);
-
+    int updatePassword(Patient patient);
+    int count();
 }

@@ -4,7 +4,7 @@ import api from "../utils/api"
 async function findAll (pageNo = 1, pageSize = 5, params = {}) {
     // console.log("findAll", pageNo, pageSize, params)
     let resp = await api({
-        url: "/schedules",
+        url: "/orders",
         method: "get",
         params: {
             pageNo,
@@ -16,33 +16,34 @@ async function findAll (pageNo = 1, pageSize = 5, params = {}) {
 }
 async function deleteById (id) {
     let resp = await api({
-        url: `/schedules/${id}`,
+        url: `/orders/${id}`,
         method: "delete",
     });
     return resp;
 }
-async function save (schedule) {
+async function save (order) {
     let resp = await api({
-        url: "/schedules",
-        method: "post",
-        data: schedule
-    })
-    return resp;
-}
-async function addOrder (order) {
-    let resp = await api({
-        url: "/schedules/addOrder",
+        url: "/orders",
         method: "post",
         data: order
     })
     return resp;
 }
-async function update (schedule) {
+async function update (order) {
     let resp = await api({
-        url: "/schedules",
+        url: "/orders",
         method: "put",
-        data: schedule
+        data: order
     })
     return resp;
 }
-export { findAll, deleteById, save, update, addOrder }
+async function updateStatus (order) {
+    let resp = await api({
+        url: "/orders/status",
+        method: "put",
+        data: order
+    })
+    // console.log("updateStatus", resp)
+    return resp;
+}
+export { findAll, deleteById, save, update, updateStatus }

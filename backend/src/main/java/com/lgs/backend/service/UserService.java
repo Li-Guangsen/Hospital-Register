@@ -10,5 +10,7 @@ public interface UserService {
     User getUserById(Integer id);
     boolean addUser(User user);
     boolean updateUser(User user);
+    boolean updatePassword(User user);
     boolean deleteUser(Integer id);
+    User findUserByUsername(String username);
 }

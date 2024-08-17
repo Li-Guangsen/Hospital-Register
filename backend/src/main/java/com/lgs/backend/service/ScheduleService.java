@@ -1,5 +1,6 @@
 package com.lgs.backend.service;
 
+import com.lgs.backend.model.Order;
 import com.lgs.backend.model.Schedule;
 import com.lgs.backend.model.ScheduleSearchBean;
 import com.lgs.backend.utils.PaginateInfo;
@@ -12,4 +13,5 @@ public interface ScheduleService {
     boolean addSchedule(Schedule schedule);
     boolean updateSchedule(Schedule schedule);
     boolean deleteSchedule(Integer id);
+    boolean addOrder(Order order);
 }

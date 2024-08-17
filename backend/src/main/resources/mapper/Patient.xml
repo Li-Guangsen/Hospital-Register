@@ -5,7 +5,6 @@
 <mapper namespace="com.lgs.backend.dao.PatientDao">
     <resultMap id="PatientResultMap" type="Patient">
         <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="password" jdbcType="VARCHAR" property="password" />
         <result column="photo" jdbcType="VARCHAR" property="photo" />
         <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="sex" jdbcType="VARCHAR" property="sex" />
@@ -17,7 +16,6 @@
     <sql id="selectColumns">
         select  id,
                 phone,
-                password,
                 photo,
                 name,
                 sex,
@@ -66,6 +64,9 @@
     <select id="selectNames" resultType="Patient">
         SELECT id, name FROM t_patient
     </select>
+    <select id="count" resultType="int">
+        select count(1) from t_patient
+    </select>
     <delete id="deleteByPrimaryKey">
         delete from t_patient
         where id = #{id}
@@ -84,7 +85,6 @@
     <update id="updateByPrimaryKey" parameterType="Subject">
         update t_patient
         set phone=#{phone},
-            password=#{password},
             photo=#{photo},
             name=#{name},
             sex=#{sex},
@@ -93,5 +93,9 @@
             description=#{description}
         where id = #{id}
     </update>
-
+    <update id="updatePassword" parameterType="Subject">
+        update t_patient
+        set password=#{password}
+        where id = #{id}
+    </update>
 </mapper>

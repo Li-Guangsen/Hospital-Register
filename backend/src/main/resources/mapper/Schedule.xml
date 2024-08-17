@@ -64,4 +64,9 @@
             work_time = #{workTime}
         where id = #{id}
     </update>
+    <update id="updateCount" parameterType="java.lang.Integer">
+        update t_schedule
+        set count = count - 1
+        where id = #{id}
+    </update>
 </mapper>

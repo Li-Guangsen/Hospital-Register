@@ -82,7 +82,7 @@
           <el-table-column prop="phone" label="手机号" width="160" />
           <el-table-column
             prop="about"
-            label="信息"
+            label="简介"
             width="480"
             show-overflow-tooltip
           />
@@ -218,12 +218,12 @@
           ></el-col>
         </el-row>
 
-        <el-form-item label="信息:" label-width="45" prop="about">
+        <el-form-item label="简介:" label-width="45" prop="about">
           <el-input
             v-model="sfm.about"
             :rows="8"
             type="textarea"
-            placeholder="请输入信息"
+            placeholder="简介"
           />
         </el-form-item>
       </el-form>
@@ -284,6 +284,7 @@ function resetSearch () {
   searchFromRef.resetFields()
 }
 function submitForm () {
+  //
   let stu = toRaw(sfm.value)
   if (stu.id && stu.id != '') {//修改
     submitEdit(stu)

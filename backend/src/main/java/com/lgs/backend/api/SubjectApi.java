@@ -42,6 +42,10 @@ public class SubjectApi {
     public List<Subject> getSubjectNames() {
         return subjectService.getSubjectNames();
     }
+    @GetMapping("/count")
+    public int getSubjectCount() {
+        return subjectService.getSubjectCount();
+    }
     @PostMapping()
     public ResponseEntity<Map<String, Object>> addSubject(@RequestBody Subject subject) {
         boolean success = subjectService.addSubject(subject);

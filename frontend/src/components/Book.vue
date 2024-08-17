@@ -4,9 +4,6 @@
     <div class="search">
       <el-form :inline="true" ref="searchFromRef" :model="sm">
         <!-- 表单项 -->
-        <el-form-item label="主键" prop="id">
-          <el-input placeholder="请输入ID" v-model="sm.id" />
-        </el-form-item>
         <el-form-item label="科室" prop="subId">
           <el-select
             placeholder="请选择科室"
@@ -34,20 +31,56 @@
             :width="650"
           />
         </el-form-item>
-        <el-form-item label="最少个数" prop="count">
-          <el-input placeholder="请输入最少个数" v-model="sm.count" />
-        </el-form-item>
       </el-form>
     </div>
     <!-- 操作区 -->
     <div class="operate">
-      <el-button type="primary" @click="add" :icon="Plus">新增</el-button>
       <el-button type="primary" @click="search" :icon="Search">查询</el-button>
       <el-button type="primary" @click="resetSearch" :icon="Refresh"
         >重置</el-button
       >
     </div>
+    <div class="card-wrapper">
+      <el-card
+        v-for="item in tableData"
+        :key="item.id"
+        class="card-container"
+        style="background-color: #eef8fd"
+      >
+        <!-- 卡片的头像和名称部分 -->
+        <div class="card-header">
+          <el-avatar :src="item.doctor.photo" :size="100" />
+          <div style="margin: 10px 0"></div>
+          <div class="card-info">
+            <!-- 黑体粗体 -->
+            <strong>{{ item.doctor.name }}</strong>
+            ---
+            <strong></strong>{{ item.doctor.subject.name }}
+          </div>
+          <div style="margin: 20px 0"></div>
+          <strong>挂号日期；</strong>{{ item.workTime }}
+        </div>
 
+        <!-- 卡片的主要内容部分 -->
+        <div class="card-body">
+          <div class="amount">
+            <strong>挂号费:</strong>
+            <span style="color: red"
+              >￥{{ item.doctor.money }}&nbsp;&nbsp;</span
+            >
+            <strong>剩余:</strong> {{ item.count }}
+          </div>
+          <p><strong>简介:&nbsp;&nbsp;&nbsp;</strong>{{ item.doctor.about }}</p>
+        </div>
+
+        <!-- 卡片的底部按钮 -->
+        <div class="card-footer">
+          <el-button type="primary" @click="handleAction(item.id)"
+            >挂号</el-button
+          >
+        </div>
+      </el-card>
+    </div>
     <!-- 数据展示区 -->
     <div class="data">
       <!-- 表格 -->
@@ -58,7 +91,6 @@
           style="width: 100%"
           :header-cell-style="headercellStyle"
         >
-          <el-table-column prop="id" label="ID" width="70" />
           <el-table-column prop="doctor.name" label="医生姓名" width="120" />
           <el-table-column prop="doctor.photo" label="医生头像" width="100">
             <template #default="{ row }">
@@ -90,15 +122,8 @@
           />
           <el-table-column label="操作">
             <template #default="scope">
-              <el-button size="small" @click="editRow(scope.row)">
-                Edit
-              </el-button>
-              <el-button
-                size="small"
-                type="danger"
-                @click="deleteRow(scope.row)"
-              >
-                Delete
+              <el-button type="primary" @click="deleteRow(scope.row)">
+                挂号
               </el-button>
             </template>
           </el-table-column>
@@ -110,7 +135,7 @@
         <el-pagination
           v-model:current-page="pi.pageNo"
           v-model:page-size="pi.pageSize"
-          :page-sizes="[5, 10, 15, 30, 50, 100]"
+          :page-sizes="[5, 10]"
           layout="total, sizes, prev, pager, next, jumper"
           :total="pi.total"
           background
@@ -180,11 +205,20 @@
 </template>
 <script setup>
 import { Plus, Delete, Edit, Refresh, Search, Share, Upload, } from '@element-plus/icons-vue'
-import { findAll as apiFindAll, deleteById as apiDeleteById, save as apiSave, update as apiUpdate } from '@/api/ScheduleApi'
+import { findAll as apiFindAll, addOrder as apiAddOrder } from '../api/ScheduleApi'
 import { findSubNames } from '@/api/SubjectApi'
 import { findDocNames } from '../api/DoctorApi'
 import { nextTick, onMounted, ref, toRaw } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+
+const loading = ref(true)
+const lists = ref()
+const setLoading = () => {
+  loading.value = true
+  setTimeout(() => {
+    loading.value = false
+  }, 2000)
+}
 
 //当组件加载完成后，自动调用findAll方法
 onMounted(async () => {
@@ -197,7 +231,29 @@ onMounted(async () => {
     doctor.name = `${doctor.name} -- ${doctor.subject.name}`;
     return doctor;
   });
-  document.title = '排班管理'
+  document.title = '患者挂号'
+  loading.value = false
+  lists.value = [
+    {
+      imgUrl:
+        'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
+      name: 'Deer',
+      date: "2021-09-01"
+    },
+    {
+      imgUrl:
+        'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
+      name: 'Horse',
+      date: "2021-09-01"
+    },
+    {
+      imgUrl:
+        'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
+      name: 'Mountain Lion',
+      date: "2021-09-01"
+    },
+  ]
+
 })
 const departments = ref([])
 const doctors = ref([])
@@ -276,15 +332,6 @@ function deleteById (id) {
   })
 }
 const show = ref(false)//控制对话框是否显示
-function editRow (row) {
-  //克隆防止修改数据时影响原数据
-  row = Object.assign({}, row)
-  show.value = true
-  dialogTitle.value = '修改排班信息'
-  nextTick(() => {
-    sfm.value = row
-  })
-}
 async function submitEdit (stu) {
   let resp = await apiUpdate(stu)
   // console.log("0000" + resp)
@@ -304,29 +351,6 @@ async function submitEdit (stu) {
   }
 }
 
-function add () {
-  sfm.value.id = ''
-  show.value = true
-  dialogTitle.value = '添加排班'
-}
-async function submitAdd (stu) {
-  let resp = await apiSave(stu)
-  // console.log(resp)
-  if (resp.success) {
-    ElMessage({
-      type: 'success',
-      message: '操作成功',
-    })
-    show.value = false
-    search()
-  }
-  else {
-    ElMessage({
-      message: '操作失败',
-      type: 'warning',
-    })
-  }
-}
 const doctorFormModel = ref({
   id: '',
   doctorId: '',
@@ -375,6 +399,41 @@ function headercellStyle () {
 .photo .icon {
   width: 100px;
   height: 100px;
+}
+.card-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 10px 0;
+}
+
+.card-container {
+  flex: 1 1 calc(20% - 20px);
+  box-sizing: border-box;
+  max-width: calc(20% - 20px);
+  min-width: 250px;
+}
+
+.card-header {
+  text-align: center;
+  align-items: center;
+}
+
+.card-body {
+  margin-top: 20px;
+  height: 250px;
+  overflow: hidden;
+}
+
+.amount {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.card-footer {
+  text-align: right;
+  margin-top: 20px;
 }
 </style>
 <style>

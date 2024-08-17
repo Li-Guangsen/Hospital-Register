@@ -41,7 +41,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean updatePassword(User user) {
+        return userDao.updatePassword(user)>0;
+    }
+
+    @Override
     public boolean deleteUser(Integer id) {
         return userDao.deleteByPrimaryKey(id)>0;
+    }
+
+    @Override
+    public User findUserByUsername(String username) {
+        return userDao.findUserByUsername(username);
     }
 }

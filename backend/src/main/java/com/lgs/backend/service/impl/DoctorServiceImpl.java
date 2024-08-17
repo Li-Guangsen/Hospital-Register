@@ -49,4 +49,9 @@ public class DoctorServiceImpl implements DoctorService {
     public boolean deleteDoctor(Integer id) {
         return doctorDao.deleteByPrimaryKey(id)>0;
     }
+
+    @Override
+    public int getDoctorCount() {
+        return doctorDao.count();
+    }
 }

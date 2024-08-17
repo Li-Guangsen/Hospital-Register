@@ -37,6 +37,11 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    public boolean updatePassword(Patient patient) {
+        return patientDao.updatePassword(patient)>0;
+    }
+
+    @Override
     public boolean deletePatient(Integer id) {
         return patientDao.deleteByPrimaryKey(id)>0;
     }
@@ -44,5 +49,10 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public boolean addPatient(Patient patient) {
         return patientDao.insert(patient)>0;
+    }
+
+    @Override
+    public int getPatientCount() {
+        return patientDao.count();
     }
 }

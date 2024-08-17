@@ -55,6 +55,9 @@
               >
                 Delete
               </el-button>
+              <el-button size="small" @click="editUserPassRow(scope.row)">
+                EditAdminPassword
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -73,6 +76,28 @@
         />
       </div>
     </div>
+    <el-dialog
+      v-model="pUShow"
+      title="修改管理员密码"
+      width="640"
+      draggable
+      :close-on-click-modal="false"
+      @closed="closeUserPass"
+    >
+      <el-form :model="pufm" ref="pufRef">
+        <el-form-item label="密码:" label-width="80" prop="password">
+          <el-input v-model="pufm.password" placeholder="请输入新密码" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="pUShow = false">取消</el-button>
+          <el-button type="primary" @click="submitUserPassForm">
+            确认
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
     <!-- 新增对话框 -->
     <el-dialog
       v-model="show"
@@ -95,13 +120,7 @@
             placeholder="请输入账号"
           />
         </el-form-item>
-        <el-form-item label="密码:" label-width="120" prop="password">
-          <el-input
-            v-model="sfm.password"
-            placeholder="请输入密码"
-            style="width: 300px"
-          /> </el-form-item
-        ><el-form-item label="姓名:" label-width="120" prop="name">
+        <el-form-item label="姓名:" label-width="120" prop="name">
           <el-input
             v-model="sfm.name"
             style="width: 300px"
@@ -129,7 +148,7 @@
 </template>
 <script setup>
 import { Plus, Delete, Edit, Refresh, Search, Share, Upload, } from '@element-plus/icons-vue'
-import { findAll as apiFindAll, deleteById as apiDeleteById, save as apiSave, update as apiUpdate } from "../api/AdminApi"
+import { findAll as apiFindAll, deleteById as apiDeleteById, save as apiSave, update as apiUpdate, apiUpdatePass as apiAdminUpdatePass } from "../api/AdminApi"
 import { nextTick, onMounted, ref, toRaw } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
@@ -176,6 +195,27 @@ function submitForm () {
     submitAdd(stu)
   }
 }
+function submitUserPassForm () {
+  let stu = toRaw(pufm.value)
+  submitEditUserPass(stu)
+}
+async function submitEditUserPass (stu) {
+  let resp = await apiAdminUpdatePass(stu)
+  if (resp.success) {
+    ElMessage({
+      type: 'success',
+      message: '操作成功',
+    })
+    pUShow.value = false
+    search()
+  }
+  else {
+    ElMessage({
+      message: '操作失败',
+      type: 'warning',
+    })
+  }
+}
 function deleteRow (row) {
   let id = row.id
   console.log(id)
@@ -211,6 +251,11 @@ function deleteById (id) {
   })
 }
 const show = ref(false)//控制对话框是否显示
+const pUShow = ref(false)
+function editUserPassRow (row) {
+  pUShow.value = true
+  pufm.value = row
+}
 function editRow (row) {
   //克隆防止修改数据时影响原数据
   row = Object.assign({}, row)
@@ -268,13 +313,20 @@ async function submitAdd (stu) {
 const adminFormModel = ref({
   name: "",
   username: "",
-  password: "",
   description: "",
 })
 const sfm = adminFormModel
-
+const passwordUserFormModel = ref({
+  id: '',
+  password: ''
+})
+const pufm = passwordUserFormModel
 //新增修改表单实例
 let sfRef
+let pufRef
+function closeUserPass () {
+  pufRef.value = { id: '', password: '' }
+}
 //重置表单
 function close () {
   sfRef.resetFields()

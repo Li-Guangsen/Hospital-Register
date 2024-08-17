@@ -13,5 +13,6 @@ public interface DoctorDao {
     int insert(Doctor doctor);
     Doctor selectByPrimaryKey(Integer id);
     int updateByPrimaryKey(Doctor doctor);
+    int count();
 
 }

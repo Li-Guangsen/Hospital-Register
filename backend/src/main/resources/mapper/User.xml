@@ -32,6 +32,15 @@
             </if>
         </where>
     </select>
+    <select id="findUserByUsername" resultType="User">
+        SELECT id,
+               username,
+               password,
+               name,
+               description
+        FROM t_user
+        where username = #{username}
+    </select>
     <delete id="deleteByPrimaryKey">
         delete
         from t_user
@@ -47,9 +56,13 @@
     <update id="updateByPrimaryKey" parameterType="User">
         update t_user
         set name=#{name},
-            password=#{password},
             username=#{username},
             description=#{description}
+        where id = #{id}
+    </update>
+    <update id="updatePassword" parameterType="User">
+        update t_user
+        set password=#{password}
         where id = #{id}
     </update>
 </mapper>

@@ -13,5 +13,5 @@ public interface ScheduleDao {
     int insert(Schedule record);
     Schedule selectByPrimaryKey(Integer id);
     int updateByPrimaryKey(Schedule schedule);
-
+    int updateCount(Integer id);
 }

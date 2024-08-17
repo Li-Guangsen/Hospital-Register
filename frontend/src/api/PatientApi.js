@@ -48,4 +48,12 @@ async function update (patient) {
     })
     return resp;
 }
-export { findAll, deleteById, save, update }
+async function apiUpdatePass (patient) {
+    let resp = await api({
+        url: "/patients/password",
+        method: "put",
+        data: patient
+    })
+    return resp;
+}
+export { findAll, deleteById, save, update, apiUpdatePass }

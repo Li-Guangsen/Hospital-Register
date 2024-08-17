@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-
+import { get as getJwt } from "../api/JwtApi"
 const routes = [{
   name: "main",
   path: "/main",
@@ -28,8 +28,28 @@ const routes = [{
     path: "/main/schedule",//路由路径
     component: () => import("../components/Schedule.vue")//路由组件
   },
+  {
+    name: "Book",//路由名称
+    path: "/main/book",//路由路径
+    component: () => import("../components/Book.vue")//路由组件
+  },
+  {
+    name: "Order",//路由名称
+    path: "/main/order",//路由路径
+    component: () => import("../components/Order.vue")//路由组件
+  },
+  {
+    name: "DashBoard",//路由名称
+    path: "/main/dashboard",//路由路径
+    component: () => import("../components/DashBoard.vue")//路由组件
+  },
   ]
 }, {
+  name: "Login",
+  path: "/login",
+  component: () => import("../components/Login.vue")//路由组件
+},
+{
   name: "index",
   path: "",
   redirect: "/main"
@@ -39,5 +59,16 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 });
-
+router.beforeEach((to, from, next) => {
+  let jwt = getJwt();
+  //只能校验有没有token，不能校验token是否有效
+  //不是login页面，且没有jwt，
+  // console.log("to.name:" + to.name);
+  if (to.name !== "Login" && !jwt) {
+    // console.log("to.name:" + to.name);
+    next({ name: "Login" });
+  } else {
+    next();
+  }
+});
 export default router;

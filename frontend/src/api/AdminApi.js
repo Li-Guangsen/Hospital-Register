@@ -28,6 +28,14 @@ async function save (adm) {
     })
     return resp;
 }
+async function login (adm) {
+    let resp = await api({
+        url: "/users/login",
+        method: "post",
+        data: adm
+    })
+    return resp;
+}
 async function update (adm) {
     let resp = await api({
         url: "/users",
@@ -36,4 +44,12 @@ async function update (adm) {
     })
     return resp;
 }
-export { findAll, deleteById, save, update }
+async function apiUpdatePass (adm) {
+    let resp = await api({
+        url: "/users/password",
+        method: "put",
+        data: adm
+    })
+    return resp;
+}
+export { findAll, deleteById, save, update, login, apiUpdatePass }

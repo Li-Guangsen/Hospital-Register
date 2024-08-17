@@ -12,4 +12,6 @@ public interface UserDao {
     int insert(User user);
     User selectByPrimaryKey(Integer id);
     int updateByPrimaryKey(User user);
+    int updatePassword(User user);
+    User findUserByUsername(String username);
 }

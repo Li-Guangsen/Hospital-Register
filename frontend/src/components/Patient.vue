@@ -75,6 +75,9 @@
               >
                 Delete
               </el-button>
+              <el-button size="small" @click="editPassRow(scope.row)">
+                EditPassword
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -93,6 +96,26 @@
         />
       </div>
     </div>
+    <el-dialog
+      v-model="pShow"
+      title="修改密码"
+      width="640"
+      draggable
+      :close-on-click-modal="false"
+      @closed="closePass"
+    >
+      <el-form :model="pfm" ref="pfRef">
+        <el-form-item label="密码:" label-width="80" prop="password">
+          <el-input v-model="pfm.password" placeholder="请输入新密码" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="pShow = false">取消</el-button>
+          <el-button type="primary" @click="submitPassForm"> 确认 </el-button>
+        </div>
+      </template>
+    </el-dialog>
     <!-- 新增对话框 -->
     <el-dialog
       v-model="show"
@@ -109,12 +132,7 @@
             ><el-form-item label="手机号:" label-width="80" prop="phone">
               <el-input v-model="sfm.phone" placeholder="请输入病人手机号" />
             </el-form-item>
-            <el-form-item label="密码:" label-width="80" prop="password">
-              <el-input
-                v-model="sfm.password"
-                placeholder="请输入密码"
-              /> </el-form-item
-            ><el-form-item label="姓名:" label-width="80" prop="name">
+            <el-form-item label="姓名:" label-width="80" prop="name">
               <el-input
                 v-model="sfm.name"
                 placeholder="请输入病人姓名"
@@ -124,6 +142,14 @@
                 <el-option label="男" value="男" />
                 <el-option label="女" value="女" />
               </el-select> </el-form-item
+            ><el-form-item label="出生日期:" label-width="80" prop="birth">
+              <el-date-picker
+                v-model="sfm.birth"
+                type="date"
+                placeholder="请选择出生日期"
+                :width="650"
+                style="width: 360px"
+              /> </el-form-item
           ></el-col>
           <el-col :span="12">
             <el-form-item label="头像:" label-width="100" prop="photo">
@@ -158,16 +184,7 @@
                 placeholder="请输入身份证号"
               /> </el-form-item
           ></el-col>
-          <el-col :span="12"
-            ><el-form-item label="出生日期:" label-width="100" prop="birth">
-              <el-date-picker
-                v-model="sfm.birth"
-                type="date"
-                placeholder="请选择出生日期"
-                :width="650"
-                style="width: 180px"
-              /> </el-form-item
-          ></el-col>
+          <el-col :span="12"></el-col>
         </el-row>
         <el-form-item label="信息:" label-width="60" prop="description">
           <el-input
@@ -190,7 +207,7 @@
 </template>
 <script setup>
 import { Plus, Delete, Edit, Refresh, Search, Share, Upload, } from '@element-plus/icons-vue'
-import { findAll as apiFindAll, deleteById as apiDeleteById, save as apiSave, update as apiUpdate } from '@/api/PatientApi'
+import { findAll as apiFindAll, deleteById as apiDeleteById, save as apiSave, update as apiUpdate, apiUpdatePass } from '@/api/PatientApi'
 import { nextTick, onMounted, ref, toRaw } from 'vue'
 import { descriptionProps, ElMessage, ElMessageBox } from 'element-plus'
 
@@ -240,6 +257,10 @@ function submitForm () {
     submitAdd(stu)
   }
 }
+function submitPassForm () {
+  let stu = toRaw(pfm.value)
+  submitEditPass(stu)
+}
 function deleteRow (row) {
   let id = row.id
   // console.log(id)
@@ -274,7 +295,12 @@ function deleteById (id) {
     })
   })
 }
+const pShow = ref(false)//控制对话框是否显示
 const show = ref(false)//控制对话框是否显示
+function editPassRow (row) {
+  pfm.value = row
+  pShow.value = true
+}
 function editRow (row) {
   //克隆防止修改数据时影响原数据
   row = Object.assign({}, row)
@@ -283,6 +309,23 @@ function editRow (row) {
   nextTick(() => {
     sfm.value = row
   })
+}
+async function submitEditPass (stu) {
+  let resp = await apiUpdatePass(stu)
+  if (resp.success) {
+    ElMessage({
+      type: 'success',
+      message: '操作成功',
+    })
+    pShow.value = false
+    search()
+  }
+  else {
+    ElMessage({
+      message: '操作失败',
+      type: 'warning',
+    })
+  }
 }
 async function submitEdit (stu) {
   let resp = await apiUpdate(stu)
@@ -327,7 +370,6 @@ async function submitAdd (stu) {
   }
 }
 const patientFormModel = ref({
-  password: "",
   name: "",
   sex: "",
   birth: "",
@@ -337,10 +379,19 @@ const patientFormModel = ref({
   description: "",
 })
 const sfm = patientFormModel
+const passwordFormModel = ref({
+  id: "",
+  password: "",
+})
+const pfm = passwordFormModel
 
 //新增修改表单实例
+let pfRef
 let sfRef
 //重置表单
+function closePass () {
+  pfRef.value = { id: "", password: "" }
+}
 function close () {
   sfRef.resetFields()
 }

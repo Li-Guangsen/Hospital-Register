@@ -12,4 +12,5 @@ public interface SubjectService {
     boolean updateSubject(Subject subject);
     boolean deleteSubject(Integer id);
     List<Subject> getSubjectNames();
+    int getSubjectCount();
 }

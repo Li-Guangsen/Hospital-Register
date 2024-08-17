@@ -41,9 +41,14 @@ public class DoctorApi {
         return doctorService.getDoctorById(id);
     }
     @GetMapping("/names")
-    public List<Doctor> getSubjectNames() {
+    public List<Doctor> getDoctorNames() {
         return doctorService.getDoctorNames();
     }
+    @GetMapping("/count")
+    public int getDoctorCount() {
+        return doctorService.getDoctorCount();
+    }
+
     @PostMapping()
     public ResponseEntity<Map<String, Object>> addDoctor(@RequestBody Doctor doctor) {
         boolean success = doctorService.addDoctor(doctor);
