@@ -2,9 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>消息</title>
+    <link rel="stylesheet" th:href="@{/client/css/msg.css}"/>
+    <script th:src="@{/client/lib/jquery/jquery-3.7.1.min.js}"></script>
+    <script th:inline="javascript">
+        let ctx = /*[[@{/}]]*/"";
+        if (ctx.endsWith("/")) {
+            ctx = ctx.substring(0, ctx.length - 1);
+        }
+    </script>
 </head>
 <body>
-<h1>消息</h1>
+<div class="title">我的消息</div>
+<ul>
+
+    <li class="msg clear">
+        <h1>消息</h1>
+    </li>
+
+    <li class="msg clear">
+        <h1>消息</h1>
+    </li>
+    <li class="msg clear">
+        <h1>消息</h1>
+    </li>
+    <li class="msg clear">
+        <h1>消息</h1>
+    </li>
+    <li class="msg clear">
+        <h1>消息</h1>
+    </li>
+</ul>
 </body>
 </html>

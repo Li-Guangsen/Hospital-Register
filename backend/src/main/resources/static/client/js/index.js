@@ -5,6 +5,7 @@ $(() => {
         $(this).addClass("active");
         let url = $(this).children("a").attr("href");
         $(".body>iframe").attr("src", url);
+
     });
 
     //阻止超链接的默认行为

@@ -1,10 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>课程列表</title>
+    <link rel="stylesheet" th:href="@{/client/css/my.css}"/>
+    <script th:src="@{/client/lib/jquery/jquery-3.7.1.min.js}"></script>
+    <script th:inline="javascript">
+        let ctx = /*[[@{/}]]*/"";
+        if (ctx.endsWith("/")) {
+            ctx = ctx.substring(0, ctx.length - 1);
+        }
+    </script>
+    <script th:src="@{/client/js/my.js}"></script>
 </head>
 <body>
-<h1>我的</h1>
+<div class="main">
+    <div class="container">
+        <div class="profile-header">
+            <img class="avatar" th:src="${patient.photo}" alt="头像">
+            <h1 class="name" th:text="${patient.name}"></h1>
+        </div>
+        <div class="profile-info">
+            <span id="patId" th:text="${patient.id}"></span>
+            <div class="info-item">
+                <label for="phone">手机号:</label>
+                <span id="phone" th:text="${patient.phone}"></span>
+            </div>
+            <div class="info-item">
+                <label for="id">身份证号:</label>
+                <span id="id" th:text="${patient.idNumber}"></span>
+            </div>
+            <div class="info-item">
+                <label for="birthday">生日:</label>
+                <span id="birthday" th:text="${patient.birth}"></span>
+            </div>
+            <span style="font-weight: bold;
+             color: #666;margin-left: 15px">其他信息：</span>
+            <div class="info-item">
+                <p id="bio" th:text="${patient.description}" style="margin-top: 2px;margin-left:15px;"></p>
+            </div>
+        </div>
+        <button class="edit-btn" id="editPwd">修改密码</button>
+        <button class="logout-btn" id="logout">退出登录</button>
+    </div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>修改密码</h2>
+            <form>
+                <div class="form-group">
+                    <label for="old-password">原密码:</label>
+                    <input type="password" id="old-password" name="old-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">新密码:</label>
+                    <input type="password" id="new-password" name="new-password" required>
+                </div>
+                <button type="button" class="submit-btn" onclick="onsubmit()">提交</button>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

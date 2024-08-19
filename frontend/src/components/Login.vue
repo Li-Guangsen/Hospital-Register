@@ -137,7 +137,7 @@ function refresh () {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url("../../public/login_bg.jpg") no-repeat center 60% / cover;
+  background: url("/login_bg.jpg") no-repeat center 60% / cover;
 }
 
 .login-box {
@@ -155,8 +155,7 @@ function refresh () {
   flex-shrink: 0;
   box-sizing: border-box;
   padding: 5px;
-  background: url("../../public/logo-modified.png") no-repeat center
-    center/contain;
+  background: url("/logo-modified.png") no-repeat center center/contain;
 }
 .captcha {
   width: 110px;

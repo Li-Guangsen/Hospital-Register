@@ -114,8 +114,7 @@
   flex-shrink: 0;
   box-sizing: border-box;
   padding: 5px;
-  background: url("../../public/logo-modified.png") no-repeat center
-    center/contain;
+  background: url("/logo-modified.png") no-repeat center center/contain;
 }
 .header > .session {
   height: 100%;

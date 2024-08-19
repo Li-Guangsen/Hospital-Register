@@ -9,6 +9,7 @@ import java.util.List;
 public interface PatientService {
     List<Patient> getPatientAll(PaginateInfo paginateInfo, PatientSearchBean psb);
     Patient getPatientById(Integer id);
+    Patient getPasswordById(Integer id);
     Patient getPatientByPhone(String phone);
     boolean updatePatient(Patient patient);
     boolean updatePassword(Patient patient);

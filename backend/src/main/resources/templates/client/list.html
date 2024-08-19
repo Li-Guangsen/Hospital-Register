@@ -16,13 +16,29 @@
 <body>
 <div class="main">
     <ul>
-        <li th:each="s:${schedules}" th:attr="id=${s.id}">
-            <div class="name">
-                <h2 th:text="${s.doctor.name}"></h2>
-                <h3 th:text="${s.doctor.subject.name}"></h3>
+        <li th:each="s:${schedules}" th:attr="id=${s.id}" class="schedule-item">
+            <div class="doctor-info">
+                <!-- 医生头像 -->
+                <img th:src="${s.doctor.photo}" alt="Doctor's Avatar" class="doctor-avatar" />
+
+                <div class="doctor-details">
+                    <!-- 医生名字 -->
+                    <h2 th:text="${s.doctor.name}"></h2>
+                    <!-- 科室 -->
+                    <h3 th:text="${s.doctor.subject.name}"></h3>
+                    <!-- 医生简介 -->
+                    <p class="doctor-bio" th:text="${s.doctor.about}"></p>
+                </div>
             </div>
-            <div class="action">
-                <p th:text="${s.workTime}"></p>
+
+            <div class="schedule-details">
+                <!-- 挂号日期 -->
+                <p class="work-time" th:text="${s.workTime}"></p>
+                <!-- 余号数量 -->
+                <p class="remaining-slots">余号: <span th:text="${s.count}"></span></p>
+                <!-- 挂号费 -->
+                <p class="registration-fee">挂号费: <span th:text="${s.doctor.money}"></span> 元</p>
+                <!-- 预约按钮 -->
                 <button class="book" type="button">预约</button>
             </div>
         </li>

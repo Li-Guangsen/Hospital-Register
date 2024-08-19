@@ -67,6 +67,13 @@
     <select id="count" resultType="int">
         select count(1) from t_patient
     </select>
+    <select id="getPasswordById" resultType="Patient">
+        select  id,
+                name,
+                password
+        from t_patient
+        where id = #{id}
+    </select>
     <select id="selectByPhone" resultMap="PatientResultMap">
         select  id,
                 phone,

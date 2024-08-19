@@ -25,6 +25,7 @@
             <if test="id != null">
                 and id = #{id}
             </if>
+            and count &gt; 0
             <if test="count != null">
                 and count &gt;= #{count}
             </if>
@@ -38,6 +39,7 @@
                 and doctor_id in (select id from t_doctor where sub_id = #{subId})
             </if>
         </where>
+        order by work_time
     </select>
     <select id="selectByPrimaryKey" resultMap="ScheduleResultMap">
         <include refid="selectColumns"/>

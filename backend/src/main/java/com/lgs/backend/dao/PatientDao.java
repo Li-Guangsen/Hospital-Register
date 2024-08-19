@@ -15,4 +15,5 @@ public interface PatientDao {
     int updatePassword(Patient patient);
     int count();
     Patient selectByPhone(String phone);
+    Patient getPasswordById(Integer id);
 }

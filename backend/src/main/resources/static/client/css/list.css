@@ -1,68 +1,96 @@
-@charset "UTF-8";
-
-body {
-    margin: 0;
-}
-
 ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
+    padding-left: 0;
+    margin-left: 0;
 }
 
-.main > ul {
-    box-sizing: border-box;
-    padding: 0 10px;
-}
-
-.main > ul > li {
-    height: 200px;
+.schedule-item {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
     margin-bottom: 20px;
-    border-radius: 15px;
-    background: url("../images/001.jpg") no-repeat center center/cover;
-    overflow: hidden;
-    position: relative;
+    transition: transform 0.3s ease;
+    background-color: azure;
+
 }
 
-.main > ul > li > .name {
-    height: 80px;
-    background-color: rgba(0, 0, 0, 0.3);
-    position: absolute;
-    bottom: 50px;
-    left: 0;
-    right: 0;
-    color: #fff;
-    box-sizing: border-box;
-    padding-left: 15px;
+.schedule-item:hover {
+    transform: translateY(-5px);
 }
 
-.main > ul > li > .name > h2 {
-    font-size: 18px;
-    margin: 10px 0 0 0;
+.doctor-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
-.main > ul > li > .name > h3 {
-    font-size: 14px;
-    margin: 6px 0 0 0;
-}
-
-.main > ul > li > .action {
-    color: #fff;
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
-    box-sizing: border-box;
-    padding-left: 10px;
-}
-
-.main > ul > li > .action > p {
-    float: left;
-    margin: 0;
-}
-
-.main > ul > li > .action > button {
-    float: right;
+.doctor-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
     margin-right: 15px;
+    object-fit: cover;
+    border: 2px solid #409eff;
 }
 
+.doctor-details h2 {
+    font-size: 18px;
+    color: #333;
+    margin: 0;
+    font-weight: bold;
+}
+
+.doctor-details h3 {
+    font-size: 14px;
+    color: #777;
+    margin: 5px 0;
+}
+
+.doctor-bio {
+    font-size: 12px;
+    color: #555;
+    margin-top: 5px;
+}
+
+.schedule-details {
+    margin-top: 10px;
+}
+
+.schedule-details p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.work-time {
+    font-weight: bold;
+    color: #409eff;
+}
+
+.remaining-slots span {
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.registration-fee span {
+    font-weight: bold;
+    color: #409eff;
+}
+
+.book {
+    width: 100%;
+    background-color: #409eff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.book:hover {
+    background-color: #66b1ff;
+}

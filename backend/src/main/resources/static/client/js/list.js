@@ -1,5 +1,5 @@
 $(() => {
-    $(".action .book").click(function () {
+    $(".schedule-details .book").click(function () {
         //排班编号
         let scheduleId = $(this).closest("li").attr("id");
 

@@ -112,6 +112,7 @@ public class UserApi {
     }
     @PutMapping("/password")
     public ResponseEntity<Map<String, Object>> updatePassword(@RequestBody User user) {
+        user.setPassword(encryptor.encryptPassword(user.getPassword()));
         boolean success = userService.updatePassword(user);
         return ResponseEntity.ok(Map.of("success", success));
     }

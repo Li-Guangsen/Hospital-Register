@@ -12,7 +12,7 @@ $(() => {
                 password
             },
             success(resp) {
-                console.log(resp);
+                // console.log(resp);
                 if (resp.success) {
                     location.href = ctx + "/client/list";
                 }

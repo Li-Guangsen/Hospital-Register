@@ -1,0 +1,21 @@
+
+body{
+    background-color: #f5f5f5;
+}
+.title{
+    padding: 20px 20px 0px;
+    color: #939393;
+}
+ul{
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #FFF;
+}
+
+.msg{
+    height: 80px;
+    border-bottom: 1px solid #f5f5f5;
+    color: #939393;
+    line-height: 30px;
+}
+

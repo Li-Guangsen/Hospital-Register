@@ -32,6 +32,11 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    public Patient getPasswordById(Integer id) {
+        return patientDao.getPasswordById(id);
+    }
+
+    @Override
     public Patient getPatientByPhone(String phone) {
         return patientDao.selectByPhone(phone);
     }

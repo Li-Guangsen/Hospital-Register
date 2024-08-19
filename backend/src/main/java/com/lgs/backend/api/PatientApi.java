@@ -5,6 +5,8 @@ import com.lgs.backend.model.Patient;
 import com.lgs.backend.model.PatientSearchBean;
 import com.lgs.backend.service.PatientService;
 import com.lgs.backend.utils.PaginateInfo;
+import org.jasypt.util.password.PasswordEncryptor;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import java.util.Map;
 @RequestMapping(value = "/api/v1/patients", produces = "application/json;charset=utf-8")
 public class PatientApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(PatientApi.class);
+    private static PasswordEncryptor encryptor = new StrongPasswordEncryptor();
 
     private PatientService patientService;
     @Autowired
@@ -61,6 +64,7 @@ public class PatientApi {
     }
     @PutMapping("/password")
     public ResponseEntity<Map<String, Object>> updatePassword(@RequestBody Patient patient) {
+        patient.setPassword(encryptor.encryptPassword(patient.getPassword()));
         boolean success = patientService.updatePassword(patient);
         return ResponseEntity.ok(Map.of("success", success));
     }
