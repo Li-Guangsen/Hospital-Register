@@ -1,5 +1,5 @@
 <template>
-  <div class="outer">
+  <div class="outer" v-loading="loading">
     <el-row>
       <el-col :span="12" class="left">
         <div id="c1" class="card">
@@ -62,6 +62,7 @@ const patient_count = ref(0)
 const doctor_cout = ref(0)
 const subject_count = ref(0)
 const order_count = ref(0)
+const loading = ref(true)
 //第1步：获取要显示图表的dom
 let c2Ref
 let c3Ref
@@ -83,6 +84,7 @@ onMounted(async () => {
   chart2.setOption(c2Opts.value)
   chart3.setOption(c3Opts.value)
   chart4.setOption(c4Opts.value)
+  loading.value = false
 });
 //第3步：编写配置项
 let c2Opts = ref({

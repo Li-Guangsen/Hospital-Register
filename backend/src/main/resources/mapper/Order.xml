@@ -71,7 +71,7 @@
             ON
                 s.doctor_id = d.id
         WHERE
-            WEEK(s.work_time) = WEEK(CURDATE())
+            WEEK(s.work_time,1) = WEEK(CURDATE(),1)
           AND
             YEAR(s.work_time) = YEAR(CURDATE())
         GROUP BY
@@ -113,7 +113,7 @@
             ON
                 s.id = o.sch_id
         WHERE
-            WEEK(s.work_time) = WEEK(CURDATE())
+            WEEK(s.work_time,1) = WEEK(CURDATE(),1)
           AND
             YEAR(s.work_time) = YEAR(CURDATE())
         GROUP BY
@@ -128,7 +128,7 @@
     </delete>
     <insert id="insert" parameterType="Order">
         insert into t_order (pat_id, sch_id, status, description)
-        values (#{patId}, #{schId}, '代叫号', #{description})
+        values (#{patId}, #{schId}, #{status}, #{description})
     </insert>
     <update id="updateByPrimaryKey" parameterType="Order">
         update t_order
@@ -142,5 +142,15 @@
         update t_order
         set status = #{status}
         where id = #{id}
+    </update>
+    <update id="updateNowStatus">
+        UPDATE t_order o
+        SET o.status = '已取消'
+        WHERE o.status = '已叫号'
+        AND o.sch_id IN (
+        SELECT s.id
+        FROM t_schedule s
+        WHERE s.work_time &lt; CURDATE()
+        );
     </update>
 </mapper>

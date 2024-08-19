@@ -40,7 +40,10 @@ public class ScheduleServiceImpl implements ScheduleService {
             return scheduleDao.findAll(schedule);
         }
     }
-
+    @Override
+    public List<Schedule> getNowSchedule(ScheduleSearchBean schedule) {
+            return scheduleDao.findAll(schedule);
+    }
     @Override
     public Schedule getScheduleById(Integer id) {
         return scheduleDao.selectByPrimaryKey(id);

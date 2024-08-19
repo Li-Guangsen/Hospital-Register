@@ -46,7 +46,7 @@
           style="width: 100%"
           :header-cell-style="headercellStyle"
         >
-          <el-table-column prop="id" label="ID" width="70" />
+          <el-table-column prop="id" label="ID" width="70" sortable />
           <el-table-column prop="name" label="姓名" width="120" />
           <el-table-column prop="photo" label="头像" width="80">
             <template #default="{ row }">

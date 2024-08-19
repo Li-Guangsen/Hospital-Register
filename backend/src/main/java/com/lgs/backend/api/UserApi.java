@@ -70,10 +70,9 @@ public class UserApi {
         if(!encryptor.checkPassword(account.getPassword(), user.getPassword())){
             return Map.of("success", false, "error", "密码错误");
         }
-        session.setAttribute("username", account.getUsername());
         //颁发token
-        Map<String,Object> data = Map.of("username", account.getUsername());
-        String jwt = JwtUtils.encode(data,secretKey);
+        Map<String,Object> data = Map.of("password", account.getPassword());
+        String jwt = JwtUtils.encode(data,secretKey,user.getUsername());
         return Map.of("success", true, "jwt", jwt);
     }
     @GetMapping("/captcha")
@@ -88,7 +87,13 @@ public class UserApi {
         //存储验证码到session
         session.setAttribute("captcha", cap.text().toLowerCase());
         cap.out(resp.getOutputStream());
-
+    }
+    @GetMapping("/username")
+    public String getUsernameFromToken()  {
+        LOGGER.info("获取用户名");
+        String username = JwtUtils.getUsernameFromToken();
+//        System.out.println("username: " + username);
+       return username;
     }
     @PostMapping
     public ResponseEntity<Map<String, Object>> addUser(@RequestBody User user) {

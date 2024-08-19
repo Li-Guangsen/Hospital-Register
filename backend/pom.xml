@@ -41,6 +41,10 @@
             <artifactId>easy-captcha</artifactId>
             <version>1.6.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
 <!--        密码加密-->
         <dependency>
             <groupId>org.jasypt</groupId>
@@ -123,24 +127,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.4.0</version>
-                <configuration>
-                    <configurationFile>src/main/resources/generatorConfig.xml</configurationFile>
-                    <overwrite>true</overwrite>
-                    <verbose>true</verbose>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>default-cli</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

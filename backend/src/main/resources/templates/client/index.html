@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--必须的-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>首页-预约管理系统客户端</title>
+    <link rel="stylesheet" th:href="@{/client/css/index.css}">
+    <script th:src="@{/client/lib/jquery/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/client/js/index.js}"></script>
+</head>
+<body>
+<div class="main">
+    <header>
+        <h1>中享思途-健身会馆客户预约系统</h1>
+    </header>
+    <div class="body">
+        <iframe th:src="@{/client/list}"></iframe>
+    </div>
+    <footer id="nav">
+        <div id="n1" class="item active">
+            <i></i>
+            <a th:href="@{/client/list}">主页</a>
+        </div>
+        <div id="n2" class="item">
+            <i></i>
+            <a th:href="@{/client/hot}">热门</a>
+        </div>
+        <div id="n3" class="item">
+            <i></i>
+            <a th:href="@{/client/message}">消息</a>
+        </div>
+        <div id="n4" class="item">
+            <i></i>
+            <a th:href="@{/client/my}">我的</a>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

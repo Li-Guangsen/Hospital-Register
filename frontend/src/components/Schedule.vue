@@ -58,7 +58,7 @@
           style="width: 100%"
           :header-cell-style="headercellStyle"
         >
-          <el-table-column prop="id" label="ID" width="70" />
+          <el-table-column prop="id" label="ID" width="70" sortable />
           <el-table-column prop="doctor.name" label="医生姓名" width="120" />
           <el-table-column prop="doctor.photo" label="医生头像" width="100">
             <template #default="{ row }">
@@ -73,7 +73,12 @@
             label="科室"
             width="110"
           />
-          <el-table-column prop="workTime" label="预约日期" width="120" />
+          <el-table-column
+            prop="workTime"
+            label="预约日期"
+            width="120"
+            sortable
+          />
           <el-table-column prop="count" label="剩余个数" width="120" />
           <el-table-column prop="doctor.money" label="挂号费" width="100" />
           <el-table-column

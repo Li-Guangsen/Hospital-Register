@@ -15,6 +15,7 @@ public interface OrderDao {
     Order selectByPrimaryKey(Integer id);
     int updateByPrimaryKey(Order order);
     int updateStatus(Order order);
+    int updateNowStatus();
     int count();
     List<OrderSearchCount> findDoctorCount();
     List<OrderSearchCount> findWorkDateCount();

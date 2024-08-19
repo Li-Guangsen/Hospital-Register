@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface ScheduleService {
     List<Schedule> getScheduleAll(PaginateInfo paginateInfo, ScheduleSearchBean schedule);
+    List<Schedule> getNowSchedule( ScheduleSearchBean schedule);
     Schedule getScheduleById(Integer id);
     boolean addSchedule(Schedule schedule);
     boolean updateSchedule(Schedule schedule);

@@ -5,6 +5,7 @@
       ><el-menu
         active-text-color="#ffd04b"
         background-color="#545c64"
+        :default-active="pathname"
         text-color="#fff"
         style="border-right: none"
         :router="true"
@@ -16,17 +17,40 @@
             :key="'m-' + menu.url"
           >
             <template #title>
-              <span>{{ menu.title }}</span>
+              <span
+                ><el-icon
+                  ><component
+                    class="icons"
+                    :is="menu.icon"
+                    style="width: 1em; height: 1em; margin-right: 8px"
+                  >
+                  </component></el-icon
+                >{{ menu.title }}</span
+              >
             </template>
             <el-menu-item
               v-for="item in menu.children"
               :index="item.url"
               :key="item.url"
+              ><el-icon
+                ><component
+                  class="icons"
+                  :is="item.icon"
+                  style="width: 1em; height: 1em; margin-right: 8px"
+                >
+                </component></el-icon
               >{{ item.title }}
             </el-menu-item>
           </el-sub-menu>
           <el-menu-item v-else :index="menu.url" :key="menu.url">
-            {{ menu.title }}
+            <el-icon
+              ><component
+                class="icons"
+                :is="menu.icon"
+                style="width: 1em; height: 1em; margin-right: 8px"
+              >
+              </component> </el-icon
+            >{{ menu.title }}
           </el-menu-item>
         </template>
       </el-menu>
@@ -39,7 +63,7 @@
         <div class="session">
           <el-menu
             :default-active="activeIndex"
-            background-color="#f3fcfe"
+            background-color="white"
             style="border-bottom: 1px solid #ebeef5"
             class="el-menu-demo"
             mode="horizontal"
@@ -47,10 +71,12 @@
             @select="userMenuSelect"
           >
             <el-sub-menu index="uesr">
-              <template #title>Admin</template>
-              <el-menu-item index="2-1">item one</el-menu-item>
-              <el-menu-item index="2-2">item two</el-menu-item>
-              <el-menu-item index="logout">logout</el-menu-item>
+              <template #title
+                ><el-icon><Avatar /></el-icon>{{ username }}</template
+              >
+              <el-menu-item index="2-1">个人信息</el-menu-item>
+              <el-menu-item index="2-2">修改密码</el-menu-item>
+              <el-menu-item index="logout">退出登录</el-menu-item>
             </el-sub-menu>
           </el-menu>
         </div>
@@ -72,7 +98,8 @@
 }
 .header {
   height: 60px;
-  background-color: #f3fcfe;
+  background-color: white;
+  /* background-color: #f3fcfe; */
   border-bottom: 1px solid #ebeef5;
   display: flex;
   flex-direction: row;
@@ -100,44 +127,70 @@
 }
 </style>
 <script setup>
-import { ref } from 'vue'
-import { Setting, User } from '@element-plus/icons-vue'
+import { ref, onMounted } from 'vue'
+import { Setting, GobletSquareFull, User, Avatar, Medal, List, TrendCharts, Notebook, Lock, OfficeBuilding, Finished } from '@element-plus/icons-vue'
 import { clear as removeJwt } from "../api/JwtApi"
+import { getUsername } from '../api/AdminApi'
 import { useRouter } from 'vue-router'
+import { ElMessage, ElMessageBox } from 'element-plus'
+
+onMounted(async () => {
+  username.value = await getUsername()
+  // console.log(username)
+  // console.log(new URL(window.location.href).pathname)
+
+})
 // 侧栏菜单数据
 const menus = ref([
-  { title: '数据看板', url: '/main/dashboard' },
+  { icon: TrendCharts, title: '数据看板', url: '/main/dashboard' },
   {
+    icon: Finished,
     title: '挂号管理',
     url: '/main',
-    children: [
-      { title: '患者挂号', url: '/main/book' },
-      { title: '挂号列表', url: '/main/order' },
+    children: [{
+      icon: GobletSquareFull, title: '患者挂号', url: '/main/book'
+    },
+    { icon: List, title: '挂号列表', url: '/main/order' },
 
     ]
   }, {
+    icon: Medal,
     title: '医生管理',
     url: '/main/doctor'
   }, {
+    icon: OfficeBuilding,
     title: '科室管理',
     url: '/main/subject'
   }, {
+    icon: Notebook,
     title: '排班管理',
     url: '/main/schedule'
   }, {
+    icon: User,
     title: '用户管理',
     url: '/main/patient'
   }, {
+    icon: Lock,
     title: '管理员管理',
     url: '/main/admin'
   }])
 const router = useRouter()
+const username = ref()
+const pathname = ref(new URL(window.location.href).pathname)
 function userMenuSelect (menu) {
   if (menu === 'logout') {
     // console.log('logout')
     removeJwt()
     router.push('/empty')
   }
+  else {
+    operateAdmin()
+  }
+}
+function operateAdmin () {
+  ElMessageBox.alert('您可以到管理员管理页面进行操作', '用户操作', {
+    confirmButtonText: 'OK',
+  })
 }
 
 </script>

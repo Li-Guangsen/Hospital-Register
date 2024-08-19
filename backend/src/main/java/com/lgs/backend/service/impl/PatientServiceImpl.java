@@ -32,6 +32,11 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    public Patient getPatientByPhone(String phone) {
+        return patientDao.selectByPhone(phone);
+    }
+
+    @Override
     public boolean updatePatient(Patient patient) {
         return patientDao.updateByPrimaryKey(patient)>0;
     }

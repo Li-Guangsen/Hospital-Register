@@ -75,9 +75,7 @@
 
         <!-- 卡片的底部按钮 -->
         <div class="card-footer">
-          <el-button type="primary" @click="handleAction(item.id)"
-            >挂号</el-button
-          >
+          <el-button type="primary" @click="operateBook">挂号</el-button>
         </div>
       </el-card>
     </div>
@@ -121,11 +119,7 @@
             show-overflow-tooltip
           />
           <el-table-column label="操作">
-            <template #default="scope">
-              <el-button type="primary" @click="deleteRow(scope.row)">
-                挂号
-              </el-button>
-            </template>
+            <el-button type="primary" @click="operateBook"> 挂号 </el-button>
           </el-table-column>
         </el-table>
       </div>
@@ -143,64 +137,6 @@
         />
       </div>
     </div>
-    <!-- 新增对话框 -->
-    <el-dialog
-      v-model="show"
-      :title="dialogTitle"
-      width="500"
-      draggable
-      :close-on-click-modal="false"
-      @closed="close"
-    >
-      <!-- 新增操作表单 -->
-      <el-form :model="sfm" ref="sfRef">
-        <el-form-item label="医生:" label-width="120" prop="doctorId">
-          <el-select
-            placeholder="请选择医生"
-            style="width: 300px"
-            v-model="sfm.doctorId"
-          >
-            <el-option
-              v-for="doctorItem in doctors"
-              :key="doctorItem.id"
-              :label="doctorItem.name"
-              :value="doctorItem.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="预约个数:" label-width="120" prop="count">
-          <el-input
-            v-model="sfm.count"
-            style="width: 300px"
-            placeholder="请输入预约个数"
-          />
-        </el-form-item>
-        <el-form-item label="预约日期:" label-width="120" prop="workTime">
-          <el-date-picker
-            v-model="sfm.workTime"
-            type="date"
-            placeholder="请选择预约日期"
-            :width="650"
-            style="width: 300px"
-          />
-        </el-form-item>
-        <el-form-item label="备注:" label-width="45" prop="description">
-          <el-input
-            v-model="sfm.description"
-            :rows="8"
-            type="textarea"
-            placeholder="请输入备注"
-          />
-        </el-form-item>
-      </el-form>
-      <!-- 对话框按钮 # 插槽 -->
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="show = false">取消</el-button>
-          <el-button type="primary" @click="submitForm"> 确认 </el-button>
-        </div>
-      </template>
-    </el-dialog>
   </div>
 </template>
 <script setup>
@@ -209,10 +145,9 @@ import { findAll as apiFindAll, addOrder as apiAddOrder } from '../api/ScheduleA
 import { findSubNames } from '@/api/SubjectApi'
 import { findDocNames } from '../api/DoctorApi'
 import { nextTick, onMounted, ref, toRaw } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 
 const loading = ref(true)
-const lists = ref()
 const setLoading = () => {
   loading.value = true
   setTimeout(() => {
@@ -233,27 +168,6 @@ onMounted(async () => {
   });
   document.title = '患者挂号'
   loading.value = false
-  lists.value = [
-    {
-      imgUrl:
-        'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
-      name: 'Deer',
-      date: "2021-09-01"
-    },
-    {
-      imgUrl:
-        'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
-      name: 'Horse',
-      date: "2021-09-01"
-    },
-    {
-      imgUrl:
-        'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
-      name: 'Mountain Lion',
-      date: "2021-09-01"
-    },
-  ]
-
 })
 const departments = ref([])
 const doctors = ref([])
@@ -289,66 +203,13 @@ let searchFromRef
 function resetSearch () {
   searchFromRef.resetFields()
 }
-function submitForm () {
-  let stu = toRaw(sfm.value)
-  if (stu.id && stu.id != '') {//修改
-    submitEdit(stu)
-  } else {//添加
-    submitAdd(stu)
-  }
-}
-function deleteRow (row) {
-  let id = row.id
-  // console.log(id)
-  deleteById(id)
-}
-function deleteById (id) {
-  ElMessageBox.confirm(
-    '是否确认删除选中排班数据?',
-    '删除确认',
-    {
-      type: 'warning',
-    }
-  ).then(async () => {//点击确认
-    let resp = await apiDeleteById(id)
-    if (resp.success) {
-      ElMessage({
-        type: 'success',
-        message: '删除成功',
-      })
-      search()
-    }
-    else {
-      ElMessage({
-        message: '删除失败',
-        type: 'warning',
-      })
-    }
-  }).catch(() => {
-    ElMessage({
-      type: 'info',
-      message: '删除取消',
-    })
+
+const operateBook = () => {
+  ElNotification({
+    title: '非法操作',
+    message: '只有患者可以挂号',
+    type: 'warning',
   })
-}
-const show = ref(false)//控制对话框是否显示
-async function submitEdit (stu) {
-  let resp = await apiUpdate(stu)
-  // console.log("0000" + resp)
-  if (resp.success) {
-    ElMessage({
-      type: 'success',
-      message: '操作成功',
-    })
-    show.value = false
-    search()
-  }
-  else {
-    ElMessage({
-      message: '操作失败',
-      type: 'warning',
-    })
-  }
 }
 
 const doctorFormModel = ref({
@@ -370,14 +231,6 @@ const doctorFormModel = ref({
   count: "",
 })
 const sfm = doctorFormModel
-
-//新增修改表单实例
-let sfRef
-//重置表单
-function close () {
-  sfRef.resetFields()
-}
-let dialogTitle = ref()
 
 function a () {
   console.log('a')

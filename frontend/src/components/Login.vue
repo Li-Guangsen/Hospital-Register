@@ -20,7 +20,7 @@
           <el-input
             v-model="loginForm.username"
             placeholder="Username"
-            prefix-icon="el-icon-user"
+            :prefix-icon="User"
             style="width: 300px; margin: 0 120px 0 0"
           ></el-input>
         </el-form-item>
@@ -34,7 +34,7 @@
             v-model="loginForm.password"
             type="password"
             placeholder="Password"
-            prefix-icon="el-icon-lock"
+            :prefix-icon="Key"
             style="width: 300px; margin: 0 120px 0 0"
             show-password
           ></el-input>
@@ -52,6 +52,7 @@
                 v-model="loginForm.captcha"
                 maxlength="4"
                 minLength="4"
+                :prefix-icon="PictureRounded"
                 style="width: 300px; margin: 0 0"
                 autocomplete="off"
               />
@@ -79,6 +80,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { Setting, User, PictureRounded, Lock, Key } from '@element-plus/icons-vue'
 import { ElForm, ElFormItem, ElInput, ElButton, ElRow, ElCol, ElMessage } from "element-plus";
 import { login } from "../api/AdminApi";
 import { save as saveToken } from "../api/JwtApi";
@@ -135,7 +137,7 @@ function refresh () {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url("../../public/login_bg.jpg") no-repeat center center/cover;
+  background: url("../../public/login_bg.jpg") no-repeat center 60% / cover;
 }
 
 .login-box {
@@ -161,6 +163,5 @@ function refresh () {
   cursor: pointer;
   /* margin-left: 130px; */
   vertical-align: middle;
-  border: 1px solid #ccc;
 }
 </style>

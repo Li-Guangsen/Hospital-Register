@@ -13,6 +13,13 @@ async function findAll (pageNo = 1, pageSize = 5, params = {}) {
     })
     return resp
 }
+async function getUsername () {
+    let resp = await api({
+        url: `/users/username`,
+        method: "get",
+    });
+    return resp;
+}
 async function deleteById (id) {
     let resp = await api({
         url: `/users/${id}`,
@@ -52,4 +59,4 @@ async function apiUpdatePass (adm) {
     })
     return resp;
 }
-export { findAll, deleteById, save, update, login, apiUpdatePass }
+export { findAll, deleteById, save, update, login, apiUpdatePass, getUsername }

@@ -24,6 +24,7 @@ public class OrderServiceImpl implements OrderService {
     }
     @Override
     public List<Order> getOrderAll(PaginateInfo paginateInfo, OrderSearchBean order) {
+
         try (Page<?> __ = PageHelper.startPage(paginateInfo.getPageNo(),paginateInfo.getPageSize())) {
             return orderDao.findAll(order);
         }

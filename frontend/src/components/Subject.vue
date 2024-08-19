@@ -49,7 +49,7 @@
           style="width: 100%"
           :header-cell-style="headercellStyle"
         >
-          <el-table-column prop="id" label="ID" width="60" />
+          <el-table-column prop="id" label="ID" width="60" sortable />
           <el-table-column prop="name" label="科室名称" width="120" />
           <el-table-column prop="subCode" label="科室代码" width="100" />
           <!-- <el-table-column prop="dutyDoctor" label="负责医师" width="100" /> -->

@@ -13,4 +13,11 @@ public class Order {
     private String description;
     private Schedule schedule;
     private Patient patient;
+
+    public Order(Integer patId, Integer schId, String status, String description) {
+        this.patId = patId;
+        this.schId = schId;
+        this.status = status;
+        this.description = description;
+    }
 }

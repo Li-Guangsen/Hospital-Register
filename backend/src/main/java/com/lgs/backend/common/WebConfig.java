@@ -21,5 +21,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new JwtInterceptor(secretKey)).addPathPatterns("/api/v1/**")
                 .excludePathPatterns("/api/v1/users/login", "/api/v1/users/register","/api/v1/users/captcha");
+        registry.addInterceptor(new ClientLoginInterceptor()).addPathPatterns("/client/book/**");
     }
 }

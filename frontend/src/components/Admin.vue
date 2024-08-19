@@ -34,7 +34,7 @@
           style="width: 100%"
           :header-cell-style="headercellStyle"
         >
-          <el-table-column prop="id" label="ID" width="80" />
+          <el-table-column prop="id" label="ID" width="80" sortable />
           <el-table-column prop="name" label="管理员姓名" width="250" />
           <el-table-column prop="username" label="账号" width="250" />
           <el-table-column

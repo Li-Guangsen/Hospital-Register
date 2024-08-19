@@ -61,7 +61,7 @@
           style="width: 100%"
           :header-cell-style="headercellStyle"
         >
-          <el-table-column prop="id" label="ID" width="70" />
+          <el-table-column prop="id" label="ID" width="70" sortable />
           <el-table-column prop="name" label="姓名" width="120" />
           <el-table-column prop="photo" label="头像" width="80">
             <template #default="{ row }">
@@ -76,7 +76,12 @@
           />
           <el-table-column prop="subject.name" label="科室" width="110" />
           <el-table-column prop="sex" label="性别" width="60" />
-          <el-table-column prop="workDate" label="入职日期" width="110" />
+          <el-table-column
+            prop="workDate"
+            label="入职日期"
+            width="110"
+            sortable
+          />
           <el-table-column prop="level" label="职称" width="120" />
           <el-table-column prop="education" label="学历" width="120" />
           <el-table-column prop="phone" label="手机号" width="160" />

@@ -18,10 +18,13 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
         //1.获取请求头中的token
         String jwt = req.getHeader("jwt");//请求头名称任意
+//        System.out.println("jw::::::::555555::::: " + jwt);
         //2.解析token
         try {
             //使用系统密钥解析请求token
             DecodedJWT decodedJWT = JwtUtils.decode(jwt, secretKey);
+//            String username = decodedJWT.getSubject();
+//            System.out.println("Username: " + username);
             return true;
         } catch (Exception e) {
             System.out.println("token解析失败");

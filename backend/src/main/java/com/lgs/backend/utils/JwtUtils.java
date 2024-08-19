@@ -10,18 +10,22 @@ import java.util.Map;
 import java.util.UUID;
 
 public class JwtUtils {
+    private static String USERNAME = null;
+
     /**
      *
      * @param payload 有效载荷 主体数据
      * @param key 密钥
      * @return jwt令牌
      */
-    public static String encode(Map<String,Object> payload, String key){
+    public static String encode(Map<String,Object> payload, String key,String username){
         JWTCreator.Builder builder = JWT.create();
+        //添加用户名
+        builder.withSubject(username);
         // 添加有效载荷
         builder.withPayload(payload);
         //过期时间
-        builder.withExpiresAt(Instant.now().plusSeconds(1800));
+       // builder.withExpiresAt(Instant.now().plusSeconds(1800));
         //签名
         builder.withIssuer("lgs");
         builder.withJWTId(UUID.randomUUID().toString());
@@ -32,6 +36,11 @@ public class JwtUtils {
      * @param key 密钥
      */
     public static DecodedJWT decode(String jwt, String key) {
-        return JWT.require(Algorithm.HMAC256(key)).build().verify(jwt);//HMAC256对称解密 KEY参数
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(key)).build().verify(jwt);//HMAC256对称解密 KEY参数
+        USERNAME = decodedJWT.getSubject();
+        return decodedJWT;
+    }
+    public static String getUsernameFromToken() {
+        return USERNAME;
     }
 }

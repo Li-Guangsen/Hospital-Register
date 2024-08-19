@@ -66,7 +66,7 @@
           style="width: 100%"
           :header-cell-style="headercellStyle"
         >
-          <el-table-column prop="id" label="ID" width="70" />
+          <el-table-column prop="id" label="ID" width="70" sortable />
           <el-table-column prop="patient.name" label="患者姓名" width="120" />
           <el-table-column
             prop="schedule.doctor.name"
@@ -81,6 +81,7 @@
           <el-table-column
             prop="schedule.workTime"
             label="预约日期"
+            sortable
             width="120"
           />
           <el-table-column label="挂号状态" width="300" prop="status">

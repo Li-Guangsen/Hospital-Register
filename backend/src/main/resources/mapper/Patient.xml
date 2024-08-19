@@ -67,6 +67,19 @@
     <select id="count" resultType="int">
         select count(1) from t_patient
     </select>
+    <select id="selectByPhone" resultMap="PatientResultMap">
+        select  id,
+                phone,
+                password,
+                photo,
+                name,
+                sex,
+                id_number,
+                birth,
+                description
+        from t_patient
+        where phone = #{phone}
+    </select>
     <delete id="deleteByPrimaryKey">
         delete from t_patient
         where id = #{id}

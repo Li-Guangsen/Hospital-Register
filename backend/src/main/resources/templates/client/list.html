@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>课程列表</title>
+    <link rel="stylesheet" th:href="@{/client/css/list.css}"/>
+    <script th:src="@{/client/lib/jquery/jquery-3.7.1.min.js}"></script>
+    <script th:inline="javascript">
+        let ctx = /*[[@{/}]]*/"";
+        if (ctx.endsWith("/")) {
+            ctx = ctx.substring(0, ctx.length - 1);
+        }
+    </script>
+    <script th:src="@{/client/js/list.js}"></script>
+</head>
+<body>
+<div class="main">
+    <ul>
+        <li th:each="s:${schedules}" th:attr="id=${s.id}">
+            <div class="name">
+                <h2 th:text="${s.doctor.name}"></h2>
+                <h3 th:text="${s.doctor.subject.name}"></h3>
+            </div>
+            <div class="action">
+                <p th:text="${s.workTime}"></p>
+                <button class="book" type="button">预约</button>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

@@ -14,4 +14,5 @@ public interface PatientDao {
     int updateByPrimaryKey(Patient patient);
     int updatePassword(Patient patient);
     int count();
+    Patient selectByPhone(String phone);
 }
