@@ -11,7 +11,7 @@
  Target Server Version : 80402 (8.4.2)
  File Encoding         : 65001
 
- Date: 19/08/2024 20:25:21
+ Date: 19/08/2024 23:00:17
 */
 
 SET NAMES utf8mb4;
@@ -62,7 +62,7 @@ CREATE TABLE `t_order`  (
   `status` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `description` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_croatian_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_croatian_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_croatian_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_order
@@ -96,8 +96,11 @@ INSERT INTO `t_order` VALUES (26, 4, 1, '已完成', '隧道股份公司公司G'
 INSERT INTO `t_order` VALUES (27, 4, 1, '已完成', 'afafaa');
 INSERT INTO `t_order` VALUES (28, 4, 1, '已完成', 'afafaa');
 INSERT INTO `t_order` VALUES (31, 4, 1, '已完成', 'afafaa');
-INSERT INTO `t_order` VALUES (32, 1, 6, '待叫号', '预约挂号测试');
-INSERT INTO `t_order` VALUES (33, 1, 2, '待叫号', '预约挂号测试');
+INSERT INTO `t_order` VALUES (32, 1, 6, '已取消', '预约挂号测试');
+INSERT INTO `t_order` VALUES (33, 1, 2, '已取消', '预约挂号测试');
+INSERT INTO `t_order` VALUES (34, 1, 2, '已取消', '预约挂号测试');
+INSERT INTO `t_order` VALUES (35, 1, 1, '已取消', '预约挂号测试');
+INSERT INTO `t_order` VALUES (36, 1, 1, '已取消', '预约挂号测试');
 
 -- ----------------------------
 -- Table structure for t_patient
@@ -120,7 +123,7 @@ CREATE TABLE `t_patient`  (
 -- ----------------------------
 -- Records of t_patient
 -- ----------------------------
-INSERT INTO `t_patient` VALUES (1, '18970277614', 'ec/vDHpIcSSqF4k8eVPiIIZYX6auNzbAoXsU6D5dqP5coBbUicaf5Bx9hnspq64O', '/pic/images/1723685681024.jpg', '胡小小', '男', '42039591948218894X', '是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国', '2024-08-17');
+INSERT INTO `t_patient` VALUES (1, '18970277614', 'fEIGraNc8pBew/HmTME+gIgcy678hwbiappphCWziuBnH7ekAyUouFu2ZpBSQT+c', '/pic/images/1723685681024.jpg', '胡小小', '男', '42039591948218894X', '是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国', '2024-08-17');
 INSERT INTO `t_patient` VALUES (2, '17859654125', 'bB0k2AEmk7mhk4XluDN/OFOzzUYu1RgOUjaWEFrBEuyPAq4hXgOSknfivf10jzY0', '/pic/images/1723685529117.png', '李四', '男', '42039591948218894X', '222', '2024-08-24');
 INSERT INTO `t_patient` VALUES (3, '17859654121', '6xxxsrJf2f/J9Bx3OsmEumESjyBefwhzieOV2uclyVvZwwbBk3UCugvpL3qttGs+', '/pic/images/1723685546541.jpg', '孙小美', '女', '42039591948218894X', '是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国是的人反感的是法国', '2024-08-17');
 INSERT INTO `t_patient` VALUES (4, '173242424234', 'Lcqdk8IE4yxMPGqLVA3oejp3t3HiqhERhyaDE1w8NplNUbE0pv+3vKjnSKkuMLgR', '/pic/images/1723685718828.png', '王丽', '男', '42039591948218894X', 'zdcasdfsaf', '2024-08-03');
@@ -143,8 +146,8 @@ CREATE TABLE `t_schedule`  (
 -- ----------------------------
 -- Records of t_schedule
 -- ----------------------------
-INSERT INTO `t_schedule` VALUES (1, 1, '2024-08-13', 10, '啊F爱上法网法网法网示范区');
-INSERT INTO `t_schedule` VALUES (2, 1, '2024-08-12', 14, '撒旦法发挖坟挖坟');
+INSERT INTO `t_schedule` VALUES (1, 1, '2024-08-13', 8, '啊F爱上法网法网法网示范区');
+INSERT INTO `t_schedule` VALUES (2, 1, '2024-08-12', 13, '撒旦法发挖坟挖坟');
 INSERT INTO `t_schedule` VALUES (3, 2, '2024-08-21', 15, '阿斯蒂芬挖法违法');
 INSERT INTO `t_schedule` VALUES (4, 10, '2024-08-13', 10, '案说法大大撒旦');
 INSERT INTO `t_schedule` VALUES (5, 5, '2024-08-18', 15, '');

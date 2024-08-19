@@ -1,8 +1,8 @@
 package com.lgs.backend.controller;
 
-import com.lgs.backend.model.Schedule;
+import com.lgs.backend.model.*;
+import com.lgs.backend.service.OrderService;
 import com.lgs.backend.service.ScheduleService;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,14 +16,18 @@ import java.util.Map;
 @RequestMapping("/client")
 public class IndexController {
     private ScheduleService scheduleService;
+    private OrderService orderService;
 
     @Autowired
     public void setScheduleService(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
     }
-
+    @Autowired
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
+    }
     @GetMapping("/index")
-    public String toIndex(HttpServletResponse response) {
+    public String toIndex() {
         return "client/index";
     }
 
@@ -35,10 +39,15 @@ public class IndexController {
     }
 
     @GetMapping("/order")
-    public String toOrder(HttpSession session) {
+    public String toOrder(HttpSession session,Map<String, Object> model) {
         if (session.getAttribute("patient") == null)
             return "client/login";
         else {
+            Patient patient = (Patient) session.getAttribute("patient");
+            OrderSearchBean orderSearchBean = new OrderSearchBean();
+            orderSearchBean.setPatId(patient.getId());
+            List<Order> orders = orderService.getOrderAll(orderSearchBean);
+            model.put("orders", orders);
             return "client/order";
         }
     }

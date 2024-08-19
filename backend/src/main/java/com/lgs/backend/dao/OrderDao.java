@@ -20,5 +20,6 @@ public interface OrderDao {
     List<OrderSearchCount> findDoctorCount();
     List<OrderSearchCount> findWorkDateCount();
     List<OrderSearchCount> findSubjectCount();
+    int closeOrder(Integer id);
 
 }

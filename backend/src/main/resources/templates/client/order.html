@@ -1,10 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>课程列表</title>
+    <link rel="stylesheet" th:href="@{/client/css/order.css}"/>
+    <script th:src="@{/client/lib/jquery/jquery-3.7.1.min.js}"></script>
+    <script th:inline="javascript">
+        let ctx = /*[[@{/}]]*/"";
+        if (ctx.endsWith("/")) {
+            ctx = ctx.substring(0, ctx.length - 1);
+        }
+    </script>
 </head>
 <body>
-<h1>我的预约</h1>
+<div class="main">
+    <ul>
+        <li th:each="o:${orders}" th:attr="id=${o.id}" class="order-item">
+            <div class="doctor-info">
+                <!-- 医生头像 -->
+                <img th:src="${o.schedule.doctor.photo}" alt="Doctor's Avatar" class="doctor-avatar"/>
+
+                <div class="doctor-details">
+                    <!-- 医生名字 -->
+                    <h2 th:text="${o.schedule.doctor.name}"></h2>
+                    <!-- 科室 -->
+                    <h3 th:text="${o.schedule.doctor.subject.name}"></h3>
+                    <!-- 挂号备注 -->
+                    <p class="doctor-bio" th:text="${o.description}"></p>
+                </div>
+            </div>
+
+            <div class="schedule-details">
+                <!-- 挂号日期 -->
+                <p class="work-time" th:text="${o.schedule.workTime}"></p>
+                <h3 th:text="${o.status}"></h3>
+                <!-- 取消按钮 -->
+                <button th:if="${o.status == '待叫号' }" class="close-order" type="button"
+                        th:onclick="'closeOrder(' + ${o.id} + ')'">取消挂号
+                </button>
+            </div>
+        </li>
+    </ul>
+</div>
 </body>
 </html>
+<script th:inline="javascript">
+    function closeOrder(id) {
+        if(confirm('确定取消预约吗？')) {
+            $.ajax({
+                url: '/client/order/close/' + id,
+                type: 'post',
+                success: function (resp) {
+                    alert('取消预约成功！');
+                    if (resp.success) {
+                        location.reload();
+                    }
+                }
+            });
+        }
+
+    }
+</script>

@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface OrderService {
     List<Order> getOrderAll(PaginateInfo paginateInfo, OrderSearchBean order);
+    List<Order> getOrderAll(OrderSearchBean order);
     Order getOrderById(Integer id);
     boolean addOrder(Order order);
     boolean updateOrder(Order order);
@@ -17,4 +18,5 @@ public interface OrderService {
     List<OrderSearchCount> getDoctorOrderCount();
     List<Integer> getWorkDateOrderCount();
     List<OrderSearchCount> getSubjectOrderCount();
+    boolean closeOrder(Integer id);
 }

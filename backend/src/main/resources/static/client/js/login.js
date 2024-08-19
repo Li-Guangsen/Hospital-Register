@@ -12,10 +12,12 @@ $(() => {
                 password
             },
             success(resp) {
-                // console.log(resp);
                 if (resp.success) {
+                    alert("登录成功");
                     location.href = ctx + "/client/list";
                 }
+                else
+                    alert(resp.error);
             }
         });
     });

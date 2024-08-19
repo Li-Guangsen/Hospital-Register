@@ -143,6 +143,11 @@
         set status = #{status}
         where id = #{id}
     </update>
+    <update id="closeOrder" parameterType="Integer">
+        update t_order
+        set status = '已取消'
+        where id = #{id}
+    </update>
     <update id="updateNowStatus">
         UPDATE t_order o
         SET o.status = '已取消'

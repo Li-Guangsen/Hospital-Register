@@ -1,0 +1,85 @@
+ul {
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.order-item {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+    background-color: #eeeeee;
+
+}
+
+.order-item:hover {
+    transform: translateY(-5px);
+}
+
+.doctor-info {
+    display: flex;
+    align-items: center;
+}
+
+.doctor-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+    border: 2px solid #409eff;
+}
+
+.doctor-details h2 {
+    font-size: 18px;
+    color: #333;
+    margin: 0;
+    font-weight: bold;
+}
+
+.doctor-details h3 {
+    font-size: 14px;
+    color: #777;
+    margin: 5px 0;
+}
+
+.doctor-bio {
+    font-size: 12px;
+    color: #555;
+    margin-top: 5px;
+}
+
+.schedule-details {
+    margin-top: 10px;
+}
+
+.schedule-details p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.work-time {
+    font-weight: bold;
+    color: #409eff;
+}
+
+.close-order {
+    width: 100%;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.close-order:hover {
+    background-color: #c0392b;
+}

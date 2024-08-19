@@ -31,6 +31,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getOrderAll(OrderSearchBean order) {
+        return orderDao.findAll(order);
+    }
+
+    @Override
     public Order getOrderById(Integer id) {
         return orderDao.selectByPrimaryKey(id);
     }
@@ -89,5 +94,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderSearchCount> getSubjectOrderCount() {
         return orderDao.findSubjectCount();
+    }
+
+    @Override
+    public boolean closeOrder(Integer id) {
+        return orderDao.closeOrder(id)>0;
     }
 }
