@@ -97,6 +97,7 @@ public class UserApi {
     }
     @PostMapping
     public ResponseEntity<Map<String, Object>> addUser(@RequestBody User user) {
+        user.setPassword(encryptor.encryptPassword(user.getPassword()));
         boolean success = userService.addUser(user);
         return ResponseEntity.ok(Map.of("success", success));
     }

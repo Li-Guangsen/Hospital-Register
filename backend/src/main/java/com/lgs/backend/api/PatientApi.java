@@ -49,6 +49,7 @@ public class PatientApi {
     }
     @PostMapping
     public ResponseEntity<Map<String, Object>> addPatient(@RequestBody Patient patient) {
+        patient.setPassword(encryptor.encryptPassword(patient.getPassword()));
         boolean success = patientService.addPatient(patient);
         return ResponseEntity.ok(Map.of("success", success));
     }
